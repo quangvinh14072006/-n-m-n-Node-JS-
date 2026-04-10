@@ -17,6 +17,7 @@ const db = mysql.createConnection({
   password: "",
   database: "quanlybaivietdb", // Tên database
 });
+
 //Kiểm tra kết nối
 db.connect((err) => {
   if (err) {

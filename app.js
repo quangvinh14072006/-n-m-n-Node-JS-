@@ -15,7 +15,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "category", // Tên database
+  database: "quanlybaivietdb", // Tên database
 });
 //Kiểm tra kết nối
 db.connect((err) => {
@@ -29,7 +29,7 @@ db.connect((err) => {
 
 //Route Trang chủ
 app.get("/", (req, res) => {
-  const sql = "SELECT * FROM category1";
+  const sql = "SELECT * FROM categories";
 
   db.query(sql, (err, result) => {
     if (err) {
@@ -45,17 +45,35 @@ app.get("/", (req, res) => {
   });
 });
 
-//Route chi tiết
-// app.get("/single", (req, res) => {
-//   res.render("layout", { cate_text: "single.ejs" });
-// });
+//Render category
+app.get("/category", (req, res) => {
+  res.render("layout", {
+    content: "category",
+  });
+});
 
+//Render home
+app.get("/home", (req, res) => {
+  const sql = "SELECT *FROM categories";
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log("Lỗi", err);
+    } else {
+      res.render("layout", {
+        content: "index",
+        news: result,
+      });
+    }
+  });
+});
+
+//Render detail
 app.get("/detail/:id", (req, res) => {
   //Lấy id từ link trang web
   const id = req.params.id;
 
   //Truy vấn đúng bài viết từ database đó
-  const sql = "SELECT * FROM category1 WHERE cate_id = " + id;
+  const sql = "SELECT * FROM categories WHERE id = " + id;
 
   db.query(sql, (err, result) => {
     if (err) throw err;

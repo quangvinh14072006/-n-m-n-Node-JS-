@@ -31,15 +31,23 @@
             <div class="col-lg-8">
                 <!-- News Detail Start -->
                 <div class="position-relative mb-3">
+                    <!-- Nếu có ảnh sửa vô đây -->
                     <img class="img-fluid w-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
                     <div class="bg-white border border-top-0 p-4">
                         <div class="mb-3">
-                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                href="">Business</a>
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2">
+                                <%= baiviet.name %>
+                            </a>
+
                             <a class="text-body" href="">Jan 01, 2045</a>
                         </div>
-                        <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">Lorem ipsum dolor sit amet
-                            elit vitae porta diam...</h1>
+                        <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">
+
+                            <%= baiviet.slug %>
+
+                                Lorem ipsum dolor sit amet
+                                elit vitae porta diam...
+                        </h1>
                         <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut
                             magna lorem. Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet
                             amet magna accusam consetetur eirmod. Kasd accusam sit ipsum sadipscing et at at

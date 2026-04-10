@@ -90,3 +90,4 @@ app.get("/detail/:id", (req, res) => {
 app.listen(3000, () => {
   console.log("Server đang chạy tại http://localhost:3000");
 });
+//

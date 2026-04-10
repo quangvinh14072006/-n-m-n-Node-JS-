@@ -29,7 +29,7 @@ db.connect((err) => {
 });
 
 //Route Trang chủ
-app.get("/", (req, res) => {
+app.get(["/", "/home"], (req, res) => {
   const sql = "SELECT * FROM categories";
 
   db.query(sql, (err, result) => {
@@ -45,6 +45,12 @@ app.get("/", (req, res) => {
     });
   });
 });
+//Render login (Chỉ giao diện, chưa tương tác với csdl)
+app.get("/login", (req, res) => {
+  res.render("layout", {
+    content: "login",
+  });
+});
 
 //Render category
 app.get("/category", (req, res) => {
@@ -53,18 +59,17 @@ app.get("/category", (req, res) => {
   });
 });
 
-//Render home
-app.get("/home", (req, res) => {
-  const sql = "SELECT *FROM categories";
-  db.query(sql, (err, result) => {
-    if (err) {
-      console.log("Lỗi", err);
-    } else {
-      res.render("layout", {
-        content: "index",
-        news: result,
-      });
-    }
+//Render single
+app.get("/single-news", (req, res) => {
+  res.render("layout", {
+    content: "single",
+  });
+});
+          
+//Render Contact
+app.get("/contact", (req, res) => {
+  res.render("layout", {
+    content: "contact",
   });
 });
 

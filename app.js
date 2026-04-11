@@ -47,7 +47,7 @@ app.get(["/", "/home"], (req, res) => {
 });
 //Render login (Chỉ giao diện, chưa tương tác với csdl)
 app.get("/login", (req, res) => {
-  res.render("layout", {
+  res.render("login-layout", {
     content: "login",
   });
 });

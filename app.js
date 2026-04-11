@@ -28,6 +28,19 @@ db.connect((err) => {
   }
 });
 
+// Middleware để trang nào cũng có dữ liệu categories:(Hàm này phải chạy trước tất cả Route khác)
+app.use((req, res, next) => {
+  const sql = "SELECT * FROM categories";
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Lỗi lấy danh mục menu:", err);
+      return next(); // Vẫn cho phép chạy tiếp dù lỗi để tránh treo server
+    }
+    res.locals.allCategories = result; // Lưu vào biến toàn cục của EJS
+    next(); // Quan trọng: Phải có lệnh này để đi tiếp đến các route bên dưới
+  });
+});
+
 //Route Trang chủ
 app.get(["/", "/home"], (req, res) => {
   const sql = "SELECT * FROM categories";
@@ -59,13 +72,29 @@ app.get("/category", (req, res) => {
   });
 });
 
+//Lọc bài viết category
+app.get("/category/:id", (req, res) => {
+  const cateId = req.params.id;
+  //Truy vấn SQL lọc bài viết
+  const sql = "SELECT * FROM posts where category_id = ?";
+  // Gọi db.query, sau đó render ra file EJS và truyền danh sách bài viết sang.
+  db.query(sql, [cateId], (err, result) => {
+    if (err) throw err;
+    res.render("layout", {
+      content: "category", // File hiển thị danh sách bài viết
+      posts: result, // Danh sách bài đã lọc
+      cateId: cateId, // Để biết đang ở danh mục nào
+    });
+  });
+});
+
 //Render single
 app.get("/single-news", (req, res) => {
   res.render("layout", {
     content: "single",
   });
 });
-          
+
 //Render Contact
 app.get("/contact", (req, res) => {
   res.render("layout", {
@@ -89,6 +118,34 @@ app.get("/detail/:id", (req, res) => {
       content: "single", //Nội dung nhúng vào file layout là trang single
       baiviet: result[0], //Gửi dữ liệu của bài viết tìm được sang trang chi tiết
     });
+  });
+});
+
+//Xử lý thanh tìm kiếm
+app.get("/search", (req, res) => {
+  const keyword = req.query.keyword;
+  const sql = "SELECT * FROM posts WHERE title LIKE ?";
+
+  db.query(sql, [`%${keyword}%`], (err, result) => {
+    if (err) throw err;
+    res.render("layout", {
+      content: "index",
+      news: result,
+      title: "Kết quả tìm kiếm cho: " + keyword,
+    });
+  });
+});
+
+//Route POST
+app.post("/contact", (req, res) => {
+  const { name, email, subject, message } = req.body;
+  const sql = "INSERT INTO contacts (name,email,message) VALUES(?,?,?)";
+
+  db.query(sql, [name, email, message], (err, result) => {
+    if (err) throw err;
+    res.send(
+      "<script>alert('Cảm ơn bạn đã liên hệ !');window.location.href='/contact';</script>",
+    );
   });
 });
 

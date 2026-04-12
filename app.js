@@ -151,6 +151,6 @@ app.post("/contact", (req, res) => {
 
 //Gọi listen chạy
 app.listen(3000, () => {
-  console.log("Server đang chạy tại http://localhost:3000");
+  console.log("Server: http://localhost:3000");
+  console.log("Admin: http://localhost:3000/login");
 });
-//

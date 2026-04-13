@@ -3,7 +3,6 @@
     background: linear-gradient(135deg, #667eea, #764ba2);
     min-height: 100vh;
 }
-
 /* căn giữa form */
 .login-container {
     min-height: 100vh;
@@ -35,6 +34,19 @@
 }
 
 /* sign up button */
-.login-form .btn + .btn {
+.login-form .btn+.btn {
     margin-top: 10px;
+}
+
+/* Sự kiện hover và click */
+.tab-login-item {
+    cursor: pointer;
+}
+
+.tab-login-item{
+    border-bottom: 5px transparent;
+}
+.tab-login-item.active{
+    transition: .5s;
+    border-bottom: 5px solid #ffcc00;
 }

@@ -50,7 +50,6 @@ app.get(["/", "/home"], (req, res) => {
       console.error("Lỗi:", err);
       return res.status(500).send("Lỗi kết nối CSDL");
     }
-
     // render LAYOUT, sau đó truyền INDEX và DATA vào
     res.render("layout", {
       content: "index", // Tên file muốn nhúng (không cần đuôi .ejs)

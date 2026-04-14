@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const mysql = require("mysql");
 const indexRouter = require("./routes/home");
@@ -18,6 +19,15 @@ app.set("views", [
 ]);
 
 app.use(express.static("public"));
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 },
+  }),
+);
 
 //Đọc dữ liệu from
 app.use(bodyParser.urlencoded({ extended: true }));

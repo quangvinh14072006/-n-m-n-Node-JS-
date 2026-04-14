@@ -11,16 +11,17 @@
         </div>
 
         <!-- PHẦN ĐĂNG NHẬP -->
-        <form id="login-content" class="form-content">
+         // thêm action và mở method = POST để gửi dữ liệu đăng nhập lên server
+        <form id="login-content" class="form-content" action="/login" method="POST">
             <div class="mb-3">
                 <label>Email address</label>
-                <input type="email" class="form-control" id="input-login-email" name="input-login-email"
-                    placeholder="example@gmail.com">
+                <input type="email" class="form-control" id="input-login-email" name="email"
+                    placeholder="example@gmail.com" required>
             </div>
             <div class="mb-3">
                 <label>Password</label>
-                <input type="password" class="form-control" id="input-login-password" name="input-login-password"
-                    placeholder="Enter password">
+                <input type="password" class="form-control" id="input-login-password" name="password"
+                    placeholder="Enter password" required>
             </div>
             <div class="text-end mb-3">
                 <a href="#" class="text-secondary text-decoration-none">Forgot password?</a>

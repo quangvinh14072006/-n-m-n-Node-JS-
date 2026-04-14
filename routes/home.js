@@ -47,6 +47,7 @@ router.get(["/", "/home"], (req, res) => {
     }
     // render LAYOUT, sau đó truyền INDEX và DATA vào
     res.render("layout", {
+      path: '/home',
       content: "index", // Tên file muốn nhúng (không cần đuôi .ejs)
       news: result, // Dữ liệu lấy từ DB
     });
@@ -63,6 +64,7 @@ router.get("/login", (req, res) => {
 //Router category
 router.get("/category", (req, res) => {
   res.render("layout", {
+    path: '/category',
     content: "category",
   });
 });
@@ -70,6 +72,7 @@ router.get("/category", (req, res) => {
 //Router single
 router.get("/single-news", (req, res) => {
   res.render("layout", {
+    path: '/single-news',
     content: "single",
   });
 });
@@ -77,6 +80,7 @@ router.get("/single-news", (req, res) => {
 //Router Contact
 router.get("/contact", (req, res) => {
   res.render("layout", {
+    path: '/contact',
     content: "contact",
   });
 });
@@ -124,6 +128,7 @@ router.get("/search", (req, res) => {
   db.query(sql, [`%${keyword}%`], (err, result) => {
     if (err) throw err;
     res.render("layout", {
+      path: '/home',
       content: "index",
       news: result,
       title: "Kết quả tìm kiếm cho: " + keyword,

@@ -69,9 +69,9 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
-                <a href="/home" class="nav-item nav-link active">Trang chủ</a>
-                <a href="/category" class="nav-item nav-link">Tin tức</a>
-                <a href="/single-news" class="nav-item nav-link">Single News</a>
+                <a href="/home" class="nav-item nav-link <%= path === '/home' ? 'active' : '' %>">Trang chủ</a>
+                <a href="/category" class="nav-item nav-link <%= path === '/category' ? 'active' : '' %>">Tin tức</a>
+                <a href="/single-news" class="nav-item nav-link <%= path === '/single-news' ? 'active' : '' %>">Single News</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
                     <div class="dropdown-menu rounded-0 m-0">
@@ -82,7 +82,7 @@
                             <% }) %>
                     </div>
                 </div>
-                <a href="/contact" class="nav-item nav-link">Liên hệ</a>
+                <a href="/contact" class="nav-item nav-link <%= path === '/contact' ? 'active' : '' %>">Liên hệ</a>
             </div>
             <!-- Thực hiện chức năng tìm kiếm -->
             <form action="/search" method="GET" class="input-group ml-auto d-none d-lg-flex"

@@ -1,0 +1,75 @@
+<%- include('partials/head.ejs') %>
+
+<div class="container-fluid mt-4 mb-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <%- include('sidebar') %>
+        </div>
+        <div class="col-lg-9">
+            <h2 class="mb-4">Quản lý Bài viết</h2>
+
+            <div class="row mb-4 bg-light p-3 rounded shadow-sm">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <input type="text" class="form-control" placeholder="Tìm tiêu đề bài viết...">
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <select class="form-select">
+                        <option value="">Tất cả danh mục</option>
+                        <option value="1">Thời sự</option>
+                        <option value="2">Công nghệ</option>
+                        <option value="3">Thể thao</option>
+                    </select>
+                </div>
+                <div class="col-md-5 text-end">
+                    <a href="/admin/posts/create" class="btn btn-primary">+ Thêm bài viết mới</a>
+                </div>
+            </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Bài viết</th>
+                            <th>Danh mục</th>
+                            <th>Lượt xem</th>
+                            <th>Trạng thái</th>
+                            <th class="text-end pe-4">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (posts && posts.length) { %>
+                            <% posts.forEach(function(post) { %>
+                                <tr>
+                                    <td class="ps-4 text-primary fw-bold"><%= post.title %></td>
+                                    <td><%= post.category_name || 'Chưa có' %></td>
+                                    <td><%= post.views ?? 0 %> views</td>
+                                    <td>
+                                        <% if(post.status == 1) { %>
+                                            <span class="badge bg-success rounded-pill" style="padding: 6px 12px;">Hoạt động</span>
+                                        <% } else { %>
+                                            <span class="badge bg-warning rounded-pill text-dark" style="padding: 6px 12px;">Bản nháp</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a href="/admin/posts/edit/<%= post.id %>" class="btn btn-sm btn-outline-primary me-1">Sửa</a>
+                                        <a href="/admin/posts/delete/<%= post.id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc muốn xóa bài này?')">Xóa</a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center py-4">Chưa có bài viết nào.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>

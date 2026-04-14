@@ -3,9 +3,20 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const indexRouter = require("./routes/home");
+const path = require("path");
+
+app.set("views", [
+  path.join(__dirname, "views"),
+  path.join(__dirname, "admin"),
+]);
 
 //Khai báo engine và thư mục public
 app.set("view engine", "ejs");
+app.set("views", [
+  path.join(__dirname, "views"),
+  path.join(__dirname, "admin"),
+]);
+
 app.use(express.static("public"));
 
 //Đọc dữ liệu from

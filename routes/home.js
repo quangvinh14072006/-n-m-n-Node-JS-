@@ -1,7 +1,7 @@
 const express = require("express");
-const app = express();
 const router = express.Router();
 const mysql = require("mysql");
+const path = require("path");
 
 //Kết nối database
 //Tạo kết nối database
@@ -35,7 +35,7 @@ router.use((req, res, next) => {
   });
 });
 
-//Render home
+//Router home
 //Route Trang chủ
 router.get(["/", "/home"], (req, res) => {
   const sql = "SELECT * FROM categories";
@@ -60,21 +60,21 @@ router.get("/login", (req, res) => {
   });
 });
 
-//Render category
+//Router category
 router.get("/category", (req, res) => {
   res.render("layout", {
     content: "category",
   });
 });
 
-//Render single
+//Router single
 router.get("/single-news", (req, res) => {
   res.render("layout", {
     content: "single",
   });
 });
 
-//Render Contact
+//Router Contact
 router.get("/contact", (req, res) => {
   res.render("layout", {
     content: "contact",
@@ -97,7 +97,7 @@ router.get("/category/:id", (req, res) => {
   });
 });
 
-//Render detail
+//Router detail
 router.get("/detail/:id", (req, res) => {
   //Lấy id từ link trang web
   const id = req.params.id;
@@ -108,7 +108,7 @@ router.get("/detail/:id", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    //Render file chi tiết
+    //Router file chi tiết
     res.render("layout", {
       content: "single", //Nội dung nhúng vào file layout là trang single
       baiviet: result[0], //Gửi dữ liệu của bài viết tìm được sang trang chi tiết
@@ -141,6 +141,54 @@ router.post("/contact", (req, res) => {
     res.send(
       "<script>alert('Cảm ơn bạn đã liên hệ !');window.location.href='/contact';</script>",
     );
+  });
+});
+
+//Router login
+router.post("/login", (req, res) => {
+  const { email, password, redirect } = req.body;
+  const adminEmail = "admin@example.com";
+  const adminPassword = "123456";
+
+  if (email === adminEmail && password === adminPassword) {
+    req.session.isAdmin = true;
+    return res.redirect(redirect || "/admin/dashboard");
+  }
+
+  const redirectQuery = redirect
+    ? "&redirect=" + encodeURIComponent(redirect)
+    : "";
+  return res.redirect(
+    "/login?error=" +
+      encodeURIComponent("Email hoặc mật khẩu không đúng") +
+      redirectQuery,
+  );
+});
+
+const adminAuth = (req, res, next) => {
+  if (req.session && req.session.isAdmin) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+//Router dasboard
+router.get("/admin/dashboard", adminAuth, (req, res) => {
+  const sql = `
+    SELECT
+      (SELECT COUNT(*) FROM posts) AS totalPosts,
+      (SELECT COUNT(*) FROM categories) AS totalCategories,
+      (SELECT COALESCE(SUM(views), 0) FROM posts) AS totalViews
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Lỗi khi tải dashboard admin");
+    }
+    res.render("dashboard", {
+      stats: results[0],
+    });
   });
 });
 module.exports = router;

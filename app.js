@@ -1,10 +1,11 @@
 const bodyParser = require("body-parser");
 const express = require("express");
-const session = require("express-session"); // Đưa lên đầu cho gọn
+const session = require("express-session");
+const app = express();
+const mysql = require("mysql");
+const indexRouter = require("./routes/home");
 const path = require("path");
 const indexRouter = require("./routes/home");
-
-const app = express();
 
 // 1. Cấu hình View Engine và Folder Views
 app.set("view engine", "ejs");
@@ -15,6 +16,18 @@ app.set("views", [
 
 // 2. Các Middleware xử lý dữ liệu và file tĩnh
 app.use(express.static("public"));
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 },
+  }),
+);
+
+//Đọc dữ liệu from
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

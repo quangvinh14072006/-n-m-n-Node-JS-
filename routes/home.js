@@ -24,6 +24,7 @@ db.connect((err) => {
 
 // Middleware để trang nào cũng có dữ liệu categories:(Hàm này phải chạy trước tất cả Route khác)
 router.use((req, res, next) => {
+  res.locals.path = req.path;
   const sql = "SELECT * FROM categories";
   db.query(sql, (err, result) => {
     if (err) {
@@ -47,6 +48,7 @@ router.get(["/", "/home"], (req, res) => {
     }
     // render LAYOUT, sau đó truyền INDEX và DATA vào
     res.render("layout", {
+      path: "/home",
       content: "index", // Tên file muốn nhúng (không cần đuôi .ejs)
       news: result, // Dữ liệu lấy từ DB
     });
@@ -63,6 +65,7 @@ router.get("/login", (req, res) => {
 //Router category
 router.get("/category", (req, res) => {
   res.render("layout", {
+    path: "/category",
     content: "category",
   });
 });
@@ -70,6 +73,7 @@ router.get("/category", (req, res) => {
 //Router single
 router.get("/single-news", (req, res) => {
   res.render("layout", {
+    path: "/single-news",
     content: "single",
   });
 });
@@ -77,6 +81,7 @@ router.get("/single-news", (req, res) => {
 //Router Contact
 router.get("/contact", (req, res) => {
   res.render("layout", {
+    path: "/contact",
     content: "contact",
   });
 });
@@ -112,6 +117,7 @@ router.get("/detail/:id", (req, res) => {
     res.render("layout", {
       content: "single", //Nội dung nhúng vào file layout là trang single
       baiviet: result[0], //Gửi dữ liệu của bài viết tìm được sang trang chi tiết
+      path: "/admin/dashboard",
     });
   });
 });
@@ -124,6 +130,7 @@ router.get("/search", (req, res) => {
   db.query(sql, [`%${keyword}%`], (err, result) => {
     if (err) throw err;
     res.render("layout", {
+      path: "/home",
       content: "index",
       news: result,
       title: "Kết quả tìm kiếm cho: " + keyword,
@@ -172,6 +179,7 @@ const adminAuth = (req, res, next) => {
     res.redirect("/login");
   }
 };
+
 //Router dasboard
 router.get("/admin/dashboard", adminAuth, (req, res) => {
   const sql = `

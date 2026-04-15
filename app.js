@@ -5,7 +5,6 @@ const app = express();
 const mysql = require("mysql");
 const indexRouter = require("./routes/home");
 const path = require("path");
-const indexRouter = require("./routes/home");
 
 // 1. Cấu hình View Engine và Folder Views
 app.set("view engine", "ejs");

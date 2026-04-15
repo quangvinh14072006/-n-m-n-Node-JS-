@@ -1,60 +1,23 @@
 <div class="container login-container">
-    <div class="login-form shadow-lg">
-        <!-- Tab chuyển đổi -->
-        <div class="tab d-flex justify-content-around">
-            <h3 class="tab-login-item active text-center mb-4" data-type="login">
-                Login
-            </h3>
-            <h3 class="tab-login-item text-center mb-4" data-type="signup">
-                Sign up
-            </h3>
+    <form id="login-content" class="form-content" action="/login" method="POST">
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger" style="color: red; margin-bottom: 15px;">
+            <%= error %>
         </div>
+    <% } %>
 
-        <!-- PHẦN ĐĂNG NHẬP -->
-         // thêm action và mở method = POST để gửi dữ liệu đăng nhập lên server
-        <form id="login-content" class="form-content" action="/login" method="POST">
-        <form id="login-content" class="form-content" method="post" action="">
-
-            <div class="mb-3">
-                <label>Email address</label>
-                <input type="email" class="form-control" id="input-login-email" name="email"
-                    placeholder="example@gmail.com" required>
-            </div>
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" class="form-control" id="input-login-password" name="password"
-                    placeholder="Enter password" required>
-            </div>
-            <div class="text-end mb-3">
-                <a href="#" class="text-secondary text-decoration-none">Forgot password?</a>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-
-        <!-- PHẦN ĐĂNG KÝ (Mặc định ẩn) -->
-        <form id="signup-content" class="form-content d-none">
-            <div class="mb-3">
-                <label>User name</label>
-                <input type="text" class="form-control" id="input-sign-up-name" name="input-sign-up-name"
-                    placeholder="e.g. Yasuo">
-            </div>
-            <div class="mb-3">
-                <label>Email address</label>
-                <input type="email" class="form-control" id="input-sign-up-email" name="input-sign-up-email"
-                    placeholder="example@gmail.com">
-            </div>
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" class="form-control" id="input-sign-up-pwd" name="input-sign-up-pwd"
-                    placeholder="Enter password">
-            </div>
-            <div class="mb-3">
-                <label>Confirm password</label>
-                <input type="password" class="form-control" id="input-sign-up-confirm-pwd"
-                    name="input-sign-up-confirm-pwd" placeholder="Confirm your password">
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Sign up</button>
-        </form>
-        <a href="/" class="btn btn-outline-secondary w-100 mt-3">Về trang chủ</a>
+    <div class="mb-3">
+        <label>User name</label> <input type="text" class="form-control" id="input-login-username" name="username"
+            placeholder="Nhập tên đăng nhập (vd: quocbao)" required>
     </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" class="form-control" id="input-login-password" name="password"
+            placeholder="Enter password" required>
+    </div>
+    <div class="text-end mb-3">
+        <a href="#" class="text-secondary text-decoration-none">Forgot password?</a>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+</form>
 </div>

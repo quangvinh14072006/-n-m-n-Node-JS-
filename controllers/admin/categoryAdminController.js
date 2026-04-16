@@ -45,10 +45,10 @@ async function createSubmit(req, res, next) {
         error: "Tên danh mục không được để trống.",
       });
     }
-    const s = slug && slug.trim() ? slug.trim() : slugify(name);
+    const normalizedSlug = slug && slug.trim() ? slug.trim() : slugify(name);
     await categoryModel.create({
       name,
-      slug: s,
+      slug: normalizedSlug,
       status: status === "0" ? 0 : 1,
     });
     req.session.flash = { type: "success", text: "Đã thêm danh mục." };
@@ -86,10 +86,10 @@ async function editSubmit(req, res, next) {
         error: "Tên danh mục không được để trống.",
       });
     }
-    const s = slug && slug.trim() ? slug.trim() : slugify(name);
+    const normalizedSlug = slug && slug.trim() ? slug.trim() : slugify(name);
     await categoryModel.update(id, {
       name,
-      slug: s,
+      slug: normalizedSlug,
       status: status === "0" ? 0 : 1,
     });
     req.session.flash = { type: "success", text: "Đã cập nhật danh mục." };

@@ -3,12 +3,14 @@ const websiteModel = require("../models/websiteModel");
 
 async function loadPublicLocals(req, res, next) {
   try {
-    const [allCategories, websiteInfo] = await Promise.all([
+    const [activeCategories, websiteInfo] = await Promise.all([
       categoryModel.findActive(),
       websiteModel.getInfo(),
     ]);
-    res.locals.allCategories = allCategories;
+
+    res.locals.allCategories = activeCategories;
     res.locals.websiteInfo = websiteInfo;
+
     next();
   } catch (err) {
     console.error("localsMiddleware:", err);

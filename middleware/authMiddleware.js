@@ -1,7 +1,11 @@
 function requireAdmin(req, res, next) {
-  if (req.session && req.session.user && req.session.user.role === 1) {
+  const currentUser = req.session && req.session.user;
+  const isAdmin = currentUser && currentUser.role === 1;
+
+  if (isAdmin) {
     return next();
   }
+
   res.redirect("/admin/login");
 }
 

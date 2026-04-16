@@ -44,7 +44,7 @@ async function sqlPublishedPostPrefix() {
 }
 
 async function findPublishedList(filters = {}) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   const {
     keyword,
     categoryId,
@@ -55,49 +55,51 @@ async function findPublishedList(filters = {}) {
     orderBy = "p.created_at DESC",
   } = filters;
 
-  const where = [`${pub}c.status = 1`];
-  const params = [];
+  const whereConditions = [`${publishedStatusPrefix}c.status = 1`];
+  const queryParams = [];
 
   if (keyword) {
-    where.push("(p.title LIKE ? OR p.summary LIKE ?)");
-    const k = `%${keyword}%`;
-    params.push(k, k);
+    whereConditions.push("(p.title LIKE ? OR p.summary LIKE ?)");
+    const keywordLike = `%${keyword}%`;
+    queryParams.push(keywordLike, keywordLike);
   }
   if (categoryId) {
-    where.push("p.category_id = ?");
-    params.push(categoryId);
+    whereConditions.push("p.category_id = ?");
+    queryParams.push(categoryId);
   }
   if (dateFrom) {
-    where.push("DATE(p.created_at) >= ?");
-    params.push(dateFrom);
+    whereConditions.push("DATE(p.created_at) >= ?");
+    queryParams.push(dateFrom);
   }
   if (dateTo) {
-    where.push("DATE(p.created_at) <= ?");
-    params.push(dateTo);
+    whereConditions.push("DATE(p.created_at) <= ?");
+    queryParams.push(dateTo);
   }
 
-  const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const whereSql = whereConditions.length
+    ? `WHERE ${whereConditions.join(" AND ")}`
+    : "";
   const offset = (Number(page) - 1) * Number(pageSize);
   const limit = Number(pageSize);
 
   const countRows = await query(
     `SELECT COUNT(*) AS total FROM posts p INNER JOIN categories c ON p.category_id = c.id ${whereSql}`,
-    params,
+    queryParams,
   );
   const total = countRows[0].total;
 
   const rows = await query(
     `${baseSelect} ${whereSql} ORDER BY ${orderBy} LIMIT ? OFFSET ?`,
-    [...params, limit, offset],
+    [...queryParams, limit, offset],
   );
 
   return { rows, total, page: Number(page), pageSize: limit };
 }
 
 async function findPublishedById(id) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   const rows = await query(
-    `${baseSelect} WHERE p.id = ? AND ${pub}c.status = 1`,
+    `${baseSelect} WHERE p.id = ? AND ${publishedStatusPrefix}c.status = 1`,
     [id],
   );
   return rows[0] || null;
@@ -108,41 +110,41 @@ async function incrementViews(id) {
 }
 
 async function findRelated(categoryId, excludeId, limit = 4) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   return query(
-    `${baseSelect} WHERE p.category_id = ? AND p.id != ? AND ${pub}c.status = 1
+    `${baseSelect} WHERE p.category_id = ? AND p.id != ? AND ${publishedStatusPrefix}c.status = 1
      ORDER BY p.created_at DESC LIMIT ?`,
     [categoryId, excludeId, limit],
   );
 }
 
 async function findLatestPublished(limit) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   return query(
-    `${baseSelect} WHERE ${pub}c.status = 1 ORDER BY p.created_at DESC LIMIT ?`,
+    `${baseSelect} WHERE ${publishedStatusPrefix}c.status = 1 ORDER BY p.created_at DESC LIMIT ?`,
     [limit],
   );
 }
 
 async function findPopularPublished(limit) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   return query(
-    `${baseSelect} WHERE ${pub}c.status = 1 ORDER BY p.views DESC LIMIT ?`,
+    `${baseSelect} WHERE ${publishedStatusPrefix}c.status = 1 ORDER BY p.views DESC LIMIT ?`,
     [limit],
   );
 }
 
 async function findByCategoryPublished(categoryId, limit) {
-  const pub = await sqlPublishedPostPrefix();
+  const publishedStatusPrefix = await sqlPublishedPostPrefix();
   return query(
-    `${baseSelect} WHERE p.category_id = ? AND ${pub}c.status = 1
+    `${baseSelect} WHERE p.category_id = ? AND ${publishedStatusPrefix}c.status = 1
      ORDER BY p.created_at DESC LIMIT ?`,
     [categoryId, limit],
   );
 }
 
 async function adminList(filters = {}) {
-  const st = await hasPostStatusColumn();
+  const hasStatusColumn = await hasPostStatusColumn();
   const {
     keyword,
     categoryId,
@@ -153,49 +155,49 @@ async function adminList(filters = {}) {
     pageSize = 10,
   } = filters;
 
-  const where = ["1=1"];
-  const params = [];
+  const whereConditions = ["1=1"];
+  const queryParams = [];
 
   if (keyword) {
-    where.push("(p.title LIKE ? OR p.summary LIKE ?)");
-    const k = `%${keyword}%`;
-    params.push(k, k);
+    whereConditions.push("(p.title LIKE ? OR p.summary LIKE ?)");
+    const keywordLike = `%${keyword}%`;
+    queryParams.push(keywordLike, keywordLike);
   }
   if (categoryId) {
-    where.push("p.category_id = ?");
-    params.push(categoryId);
+    whereConditions.push("p.category_id = ?");
+    queryParams.push(categoryId);
   }
   if (dateFrom) {
-    where.push("DATE(p.created_at) >= ?");
-    params.push(dateFrom);
+    whereConditions.push("DATE(p.created_at) >= ?");
+    queryParams.push(dateFrom);
   }
   if (dateTo) {
-    where.push("DATE(p.created_at) <= ?");
-    params.push(dateTo);
+    whereConditions.push("DATE(p.created_at) <= ?");
+    queryParams.push(dateTo);
   }
   if (
-    st &&
+    hasStatusColumn &&
     status !== undefined &&
     status !== "" &&
     status !== null
   ) {
-    where.push("p.status = ?");
-    params.push(status);
+    whereConditions.push("p.status = ?");
+    queryParams.push(status);
   }
 
-  const whereSql = `WHERE ${where.join(" AND ")}`;
+  const whereSql = `WHERE ${whereConditions.join(" AND ")}`;
   const offset = (Number(page) - 1) * Number(pageSize);
   const limit = Number(pageSize);
 
   const countRows = await query(
     `SELECT COUNT(*) AS total FROM posts p ${whereSql}`,
-    params,
+    queryParams,
   );
   const total = countRows[0].total;
 
   const rows = await query(
     `${baseSelect} ${whereSql} ORDER BY p.created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset],
+    [...queryParams, limit, offset],
   );
 
   return { rows, total, page: Number(page), pageSize: limit };
@@ -207,7 +209,7 @@ async function findByIdAny(id) {
 }
 
 async function create(data) {
-  const st = await hasPostStatusColumn();
+  const hasStatusColumn = await hasPostStatusColumn();
   const {
     title,
     summary,
@@ -217,24 +219,24 @@ async function create(data) {
     user_id,
     status = 1,
   } = data;
-  if (st) {
-    const r = await query(
+  if (hasStatusColumn) {
+    const insertResult = await query(
       `INSERT INTO posts (title, summary, content, image, category_id, user_id, status)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [title, summary, content, image, category_id, user_id, status],
     );
-    return r.insertId;
+    return insertResult.insertId;
   }
-  const r = await query(
+  const insertResult = await query(
     `INSERT INTO posts (title, summary, content, image, category_id, user_id)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [title, summary, content, image, category_id, user_id],
   );
-  return r.insertId;
+  return insertResult.insertId;
 }
 
 async function update(id, data) {
-  const st = await hasPostStatusColumn();
+  const hasStatusColumn = await hasPostStatusColumn();
   const {
     title,
     summary,
@@ -243,7 +245,7 @@ async function update(id, data) {
     category_id,
     status,
   } = data;
-  if (st) {
+  if (hasStatusColumn) {
     await query(
       `UPDATE posts SET title = ?, summary = ?, content = ?, image = ?, category_id = ?, status = ?
        WHERE id = ?`,

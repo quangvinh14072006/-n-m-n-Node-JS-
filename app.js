@@ -17,7 +17,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 const PORT = process.env.PORT || 3080;
 
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); //Báo cho Node.js biết bạn sẽ dùng EJS để vẽ giao diện (View).
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 

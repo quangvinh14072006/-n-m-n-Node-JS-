@@ -4,8 +4,12 @@ const commentModel = require("../../models/commentModel");
 const { isValidEmail } = require("../../utils/validation");
 const { buildPublicNewsFilterQuery } = require("../../utils/filterQuery");
 
-/** Dữ liệu chung khi render trang chi tiết bài viết (tránh lặp code) */
-async function loadDetailPageData(postId, post) {
+/**
+ * Gom dữ liệu trang chi tiết để dùng lại ở cả:
+ * - GET chi tiết bài viết
+ * - POST thêm bình luận (khi cần render lỗi)
+ */
+async function getDetailPageData(postId, post) {
   const [comments, related] = await Promise.all([
     commentModel.listByPost(postId),
     postModel.findRelated(post.category_id, postId, 4),
@@ -13,7 +17,7 @@ async function loadDetailPageData(postId, post) {
   return { comments, related };
 }
 
-function renderArticlePage(res, post, extras) {
+function renderDetailPage(res, post, extras) {
   res.render("layout", {
     content: "single",
     pageTitle: `${post.title} | BizNews`,
@@ -87,8 +91,8 @@ async function detail(req, res, next) {
     await postModel.incrementViews(id);
     post.views = (post.views || 0) + 1;
 
-    const { comments, related } = await loadDetailPageData(id, post);
-    renderArticlePage(res, post, { comments, related });
+    const { comments, related } = await getDetailPageData(id, post);
+    renderDetailPage(res, post, { comments, related });
   } catch (e) {
     next(e);
   }
@@ -103,17 +107,17 @@ async function addComment(req, res, next) {
     const email = (req.body.email || "").trim();
     const content = (req.body.content || "").trim();
 
-    const { comments, related } = await loadDetailPageData(id, post);
+    const { comments, related } = await getDetailPageData(id, post);
 
     if (!isValidEmail(email)) {
-      return renderArticlePage(res, post, {
+      return renderDetailPage(res, post, {
         comments,
         related,
         commentError: "Vui lòng nhập email hợp lệ.",
       });
     }
     if (!content) {
-      return renderArticlePage(res, post, {
+      return renderDetailPage(res, post, {
         comments,
         related,
         commentError: "Nội dung bình luận không được để trống.",

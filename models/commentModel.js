@@ -8,11 +8,11 @@ async function listByPost(postId) {
 }
 
 async function create({ post_id, email, content }) {
-  const r = await query(
+  const insertResult = await query(
     "INSERT INTO comments (post_id, email, content) VALUES (?, ?, ?)",
     [post_id, email, content],
   );
-  return r.insertId;
+  return insertResult.insertId;
 }
 
 module.exports = {

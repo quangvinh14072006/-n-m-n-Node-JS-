@@ -10,9 +10,12 @@ if (!fs.existsSync(uploadDir)) {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || ".jpg";
-    const base = path.basename(file.originalname, ext).replace(/[^a-z0-9-_]/gi, "");
-    cb(null, `${Date.now()}-${base}${ext}`);
+    const extension = path.extname(file.originalname) || ".jpg";
+    const fileBaseName = path
+      .basename(file.originalname, extension)
+      .replace(/[^a-z0-9-_]/gi, "");
+
+    cb(null, `${Date.now()}-${fileBaseName}${extension}`);
   },
 });
 

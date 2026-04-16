@@ -1,19 +1,25 @@
 const postModel = require("../../models/postModel");
 const contactModel = require("../../models/contactModel");
 
+function countPendingContacts(contactRows) {
+  return contactRows.filter((contact) => !contact.reviewed).length;
+}
+
 async function index(req, res, next) {
   try {
-    const { total: postTotal } = await postModel.adminList({
+    const { total: totalPosts } = await postModel.adminList({
       page: 1,
       pageSize: 1,
     });
-    const contacts = await contactModel.adminList();
-    const pendingContacts = contacts.filter((c) => !c.reviewed).length;
+
+    const contactRows = await contactModel.adminList();
+    const pendingContacts = countPendingContacts(contactRows);
+
     res.render("admin/layout", {
       content: "dashboard",
       pageTitle: "Bảng điều khiển",
-      postTotal,
-      contactTotal: contacts.length,
+      postTotal: totalPosts,
+      contactTotal: contactRows.length,
       pendingContacts,
     });
   } catch (e) {

@@ -1,12 +1,12 @@
 const query = require("../utils/dbQuery");
 
 async function create({ name, email, phone, subject, message }) {
-  const r = await query(
+  const insertResult = await query(
     `INSERT INTO contacts (name, email, phone, subject, message, reviewed)
      VALUES (?, ?, ?, ?, ?, 0)`,
     [name, email, phone || "", subject || "", message],
   );
-  return r.insertId;
+  return insertResult.insertId;
 }
 
 async function adminList() {

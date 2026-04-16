@@ -4,12 +4,22 @@
  */
 
 function buildPublicNewsFilterQuery({ keyword, categoryId, dateFrom, dateTo }) {
-  const qs = new URLSearchParams();
-  if (keyword) qs.set("keyword", keyword);
-  if (categoryId) qs.set("category_id", categoryId);
-  if (dateFrom) qs.set("date_from", dateFrom);
-  if (dateTo) qs.set("date_to", dateTo);
-  return qs.toString();
+  const queryString = new URLSearchParams();
+
+  if (keyword) {
+    queryString.set("keyword", keyword);
+  }
+  if (categoryId) {
+    queryString.set("category_id", categoryId);
+  }
+  if (dateFrom) {
+    queryString.set("date_from", dateFrom);
+  }
+  if (dateTo) {
+    queryString.set("date_to", dateTo);
+  }
+
+  return queryString.toString();
 }
 
 function buildAdminPostFilterQuery({
@@ -19,16 +29,20 @@ function buildAdminPostFilterQuery({
   dateTo,
   status,
 }) {
-  const qs = new URLSearchParams(buildPublicNewsFilterQuery({
-    keyword,
-    categoryId,
-    dateFrom,
-    dateTo,
-  }));
+  const queryString = new URLSearchParams(
+    buildPublicNewsFilterQuery({
+      keyword,
+      categoryId,
+      dateFrom,
+      dateTo,
+    }),
+  );
+
   if (status !== undefined && status !== "" && status !== null) {
-    qs.set("status", String(status));
+    queryString.set("status", String(status));
   }
-  return qs.toString();
+
+  return queryString.toString();
 }
 
 module.exports = {

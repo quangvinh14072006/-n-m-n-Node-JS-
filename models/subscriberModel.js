@@ -8,7 +8,9 @@ async function subscribe(email) {
     );
     return { ok: true };
   } catch (e) {
-    if (e.code === "ER_DUP_ENTRY") return { ok: false, duplicate: true };
+    if (e.code === "ER_DUP_ENTRY") {
+      return { ok: false, duplicate: true };
+    }
     throw e;
   }
 }

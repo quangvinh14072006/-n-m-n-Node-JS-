@@ -2,11 +2,12 @@ const subscriberModel = require("../../models/subscriberModel");
 
 async function list(req, res, next) {
   try {
-    const subscribers = await subscriberModel.listAll();
+    const subscriberRows = await subscriberModel.listAll();
+
     res.render("admin/layout", {
       content: "subscribers/list",
       pageTitle: "Đăng ký nhận tin",
-      subscribers,
+      subscribers: subscriberRows,
     });
   } catch (e) {
     next(e);

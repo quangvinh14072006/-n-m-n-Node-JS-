@@ -1,45 +1,51 @@
 const contactModel = require("../../models/contactModel");
 const { sendAlertThenRedirect } = require("../../utils/alertRedirect");
 
-function contactPage(req, res) {
-  res.render("layout", {
+function buildContactPageModel(contactFlash = null) {
+  return {
     content: "contact",
     pageTitle: "Liên hệ | BizNews",
     metaDescription: "Gửi thông tin liên hệ cho BizNews.",
-    contactFlash: null,
-  });
+    contactFlash,
+  };
+}
+
+function mapContactFormData(body) {
+  return {
+    name: body.name,
+    email: body.email,
+    phone: body.phone || "",
+    subject: body.subject || "",
+    message: body.message,
+  };
+}
+
+function contactPage(req, res) {
+  res.render("layout", buildContactPageModel());
 }
 
 async function contactSubmit(req, res, next) {
   try {
     const { name, email, phone, subject, message } = req.body;
+
     if (!name || !email || !message) {
-      return res.render("layout", {
-        content: "contact",
-        pageTitle: "Liên hệ | BizNews",
-        metaDescription: "Gửi thông tin liên hệ cho BizNews.",
-        contactFlash: {
+      return res.render(
+        "layout",
+        buildContactPageModel({
           type: "danger",
           text: "Vui lòng điền họ tên, email và nội dung.",
-        },
-      });
+        }),
+      );
     }
-    await contactModel.create({
-      name,
-      email,
-      phone: phone || "",
-      subject: subject || "",
-      message,
-    });
-    res.render("layout", {
-      content: "contact",
-      pageTitle: "Liên hệ | BizNews",
-      metaDescription: "Gửi thông tin liên hệ cho BizNews.",
-      contactFlash: {
+
+    await contactModel.create(mapContactFormData({ name, email, phone, subject, message }));
+    res.render(
+      "layout",
+      buildContactPageModel({
         type: "success",
         text: "Cảm ơn bạn! Chúng tôi đã nhận được liên hệ.",
-      },
-    });
+      }),
+    );
   } catch (e) {
     next(e);
   }
@@ -48,24 +54,18 @@ async function contactSubmit(req, res, next) {
 async function contactPopupSubmit(req, res, next) {
   try {
     const { name, email, phone, subject, message } = req.body;
-    const back = req.get("referer") || "/";
+    const backUrl = req.get("referer") || "/";
 
     if (!name || !email || !message) {
       return sendAlertThenRedirect(
         res,
         "Vui lòng điền họ tên, email và nội dung.",
-        back,
+        backUrl,
       );
     }
 
-    await contactModel.create({
-      name,
-      email,
-      phone: phone || "",
-      subject: subject || "",
-      message,
-    });
-    sendAlertThenRedirect(res, "Đã gửi liên hệ thành công!", back);
+    await contactModel.create(mapContactFormData({ name, email, phone, subject, message }));
+    sendAlertThenRedirect(res, "Đã gửi liên hệ thành công!", backUrl);
   } catch (e) {
     next(e);
   }

@@ -7,6 +7,13 @@ function parsePostStatus(bodyStatus) {
   return bodyStatus === "0" ? 0 : 1;
 }
 
+function parseStatusFilter(rawStatus) {
+  if (rawStatus === "" || rawStatus === undefined || rawStatus === null) {
+    return undefined;
+  }
+  return rawStatus;
+}
+
 /**
  * Ảnh đại diện: ưu tiên file upload, không thì URL trong form, không thì mặc định.
  */
@@ -24,14 +31,15 @@ async function list(req, res, next) {
     const categoryId = req.query.category_id || "";
     const dateFrom = req.query.date_from || "";
     const dateTo = req.query.date_to || "";
-    const status = req.query.status;
+    const rawStatus = req.query.status;
+    const statusFilter = parseStatusFilter(rawStatus);
 
     const { rows, total, pageSize } = await postModel.adminList({
       keyword,
       categoryId: categoryId || undefined,
       dateFrom: dateFrom || undefined,
       dateTo: dateTo || undefined,
-      status: status === "" || status === undefined ? undefined : status,
+      status: statusFilter,
       page,
       pageSize: 10,
     });
@@ -44,10 +52,7 @@ async function list(req, res, next) {
       categoryId,
       dateFrom,
       dateTo,
-      status:
-        status === undefined || status === "" || status === null
-          ? undefined
-          : status,
+      status: statusFilter,
     });
 
     res.render("admin/layout", {
@@ -62,7 +67,7 @@ async function list(req, res, next) {
       categoryId,
       dateFrom,
       dateTo,
-      status: status === undefined ? "" : String(status),
+      status: rawStatus === undefined ? "" : String(rawStatus),
       filterQueryPrefix,
       categories,
       flash: req.session.flash,

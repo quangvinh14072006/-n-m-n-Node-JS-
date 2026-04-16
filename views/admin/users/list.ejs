@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h2 m-0">Người dùng</h1>
+    <a href="/admin/users/create" class="btn btn-primary">Thêm người dùng</a>
+</div>
+<div class="table-responsive bg-white shadow-sm rounded">
+    <table class="table table-striped mb-0">
+        <thead><tr><th>ID</th><th>Username</th><th>Họ tên</th><th>Vai trò</th><th></th></tr></thead>
+        <tbody>
+            <% (typeof users !== 'undefined' ? users : []).forEach(function(u) { %>
+            <tr>
+                <td><%= u.userid %></td>
+                <td><%= u.username %></td>
+                <td><%= u.fullname %></td>
+                <td><%= u.role === 1 ? 'Quản trị' : 'Biên tập' %></td>
+                <td class="text-right">
+                    <a href="/admin/users/<%= u.userid %>/edit" class="btn btn-sm btn-outline-primary">Sửa</a>
+                    <form action="/admin/users/<%= u.userid %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Xóa người dùng này?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

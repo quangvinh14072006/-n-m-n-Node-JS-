@@ -1,0 +1,18 @@
+<% const u = typeof currentUser !== 'undefined' ? currentUser : {}; %>
+<nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse show" id="adminSidebar" style="min-height:100vh;">
+    <div class="sidebar-sticky pt-3 pb-5">
+        <h5 class="text-white px-3 mb-3">Quản trị BizNews</h5>
+        <p class="text-white-50 small px-3 mb-3"><%= u.fullname || u.username || '' %></p>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin">Bảng điều khiển</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/posts">Bài viết</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/categories">Danh mục</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/users">Người dùng</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/contacts">Liên hệ</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/subscribers">Đăng ký nhận tin</a></li>
+            <li class="nav-item"><a class="nav-link text-white-50" href="/admin/website">Thông tin website</a></li>
+            <li class="nav-item mt-3"><a class="nav-link text-warning" href="/" target="_blank" rel="noopener">Xem website</a></li>
+            <li class="nav-item"><a class="nav-link text-warning" href="/admin/logout">Đăng xuất</a></li>
+        </ul>
+    </div>
+</nav>

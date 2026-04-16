@@ -1,0 +1,88 @@
+<h1 class="h2 mb-4">Bài viết</h1>
+<div class="mb-3">
+    <a href="/admin/posts/create" class="btn btn-primary">Thêm bài viết</a>
+</div>
+<form class="card card-body mb-4" method="GET" action="/admin/posts">
+    <div class="form-row align-items-end">
+        <div class="col-md-2 mb-2 mb-md-0">
+            <label>Từ khóa</label>
+            <input type="text" name="keyword" class="form-control" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>">
+        </div>
+        <div class="col-md-2 mb-2 mb-md-0">
+            <label>Danh mục</label>
+            <select name="category_id" class="form-control">
+                <option value="">Tất cả</option>
+                <% (typeof categories !== 'undefined' ? categories : []).forEach(function(c) { %>
+                    <option value="<%= c.id %>" <%= String(categoryId) === String(c.id) ? 'selected' : '' %>><%= c.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="col-md-2 mb-2 mb-md-0">
+            <label>Từ ngày</label>
+            <input type="date" name="date_from" class="form-control" value="<%= typeof dateFrom !== 'undefined' ? dateFrom : '' %>">
+        </div>
+        <div class="col-md-2 mb-2 mb-md-0">
+            <label>Đến ngày</label>
+            <input type="date" name="date_to" class="form-control" value="<%= typeof dateTo !== 'undefined' ? dateTo : '' %>">
+        </div>
+        <div class="col-md-2 mb-2 mb-md-0">
+            <label>Trạng thái</label>
+            <select name="status" class="form-control">
+                <option value="" <%= !status ? 'selected' : '' %>>Tất cả</option>
+                <option value="1" <%= String(status) === '1' ? 'selected' : '' %>>Đã đăng</option>
+                <option value="0" <%= String(status) === '0' ? 'selected' : '' %>>Nháp</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-secondary btn-block">Lọc</button>
+        </div>
+    </div>
+</form>
+<p class="text-muted">Tổng: <strong><%= typeof total !== 'undefined' ? total : 0 %></strong> bài</p>
+<div class="table-responsive bg-white shadow-sm rounded">
+    <table class="table table-striped table-sm mb-0">
+        <thead>
+            <tr>
+                <th>Ảnh</th><th>Tiêu đề</th><th>Tác giả</th><th>Ngày</th><th>Chủ đề</th><th>Lượt xem</th><th>TT</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% (typeof posts !== 'undefined' ? posts : []).forEach(function(p) { 
+                var img = p.image && String(p.image).indexOf('http') === 0 ? p.image : (String(p.image||'').indexOf('/')===0 ? p.image : '/' + (p.image||''));
+            %>
+            <tr>
+                <td style="width:72px"><img src="<%= img %>" alt="" style="width:64px;height:48px;object-fit:cover"></td>
+                <td><%= p.title %></td>
+                <td><%= p.author_name %></td>
+                <td><%= p.created_at ? new Date(p.created_at).toLocaleDateString('vi-VN') : '' %></td>
+                <td><%= p.category_name %></td>
+                <td><%= p.views %></td>
+                <td><%= p.status === 1 ? 'Đăng' : 'Nháp' %></td>
+                <td class="text-right text-nowrap">
+                    <a href="/admin/posts/<%= p.id %>/edit" class="btn btn-sm btn-outline-primary">Sửa</a>
+                    <form action="/admin/posts/<%= p.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Xóa bài viết này?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+<% 
+  var tp = typeof totalPages !== 'undefined' ? totalPages : 1;
+  var pg = typeof page !== 'undefined' ? page : 1;
+  var fq = typeof filterQueryPrefix !== 'undefined' && filterQueryPrefix ? filterQueryPrefix + '&' : '';
+  function admPage(n) { return '/admin/posts?' + fq + 'page=' + n; }
+%>
+<% if (tp > 1) { %>
+<nav class="mt-3" aria-label="Phân trang admin bài viết">
+    <ul class="pagination">
+        <% if (pg > 1) { %><li class="page-item"><a class="page-link" href="<%= admPage(pg-1) %>">Trước</a></li><% } %>
+        <% for (var i = 1; i <= tp; i++) { %>
+            <li class="page-item <%= i === pg ? 'active' : '' %>"><a class="page-link" href="<%= admPage(i) %>"><%= i %></a></li>
+        <% } %>
+        <% if (pg < tp) { %><li class="page-item"><a class="page-link" href="<%= admPage(pg+1) %>">Sau</a></li><% } %>
+    </ul>
+</nav>
+<% } %>

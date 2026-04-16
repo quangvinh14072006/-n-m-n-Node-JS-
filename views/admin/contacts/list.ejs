@@ -1,0 +1,19 @@
+<h1 class="h2 mb-4">Liên hệ</h1>
+<div class="table-responsive bg-white shadow-sm rounded">
+    <table class="table table-striped mb-0">
+        <thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Chủ đề</th><th>Ngày</th><th>Đã xem</th><th></th></tr></thead>
+        <tbody>
+            <% (typeof contacts !== 'undefined' ? contacts : []).forEach(function(c) { %>
+            <tr>
+                <td><%= c.id %></td>
+                <td><%= c.name %></td>
+                <td><%= c.email %></td>
+                <td><%= c.subject || '—' %></td>
+                <td><%= c.created_at ? new Date(c.created_at).toLocaleString('vi-VN') : '' %></td>
+                <td><%= c.reviewed ? 'Có' : 'Chưa' %></td>
+                <td><a href="/admin/contacts/<%= c.id %>" class="btn btn-sm btn-outline-primary">Chi tiết</a></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

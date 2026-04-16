@@ -1,0 +1,15 @@
+<h1 class="h2 mb-4">Email đăng ký nhận tin</h1>
+<div class="table-responsive bg-white shadow-sm rounded">
+    <table class="table table-striped mb-0">
+        <thead><tr><th>ID</th><th>Email</th><th>Ngày đăng ký</th></tr></thead>
+        <tbody>
+            <% (typeof subscribers !== 'undefined' ? subscribers : []).forEach(function(s) { %>
+            <tr>
+                <td><%= s.id %></td>
+                <td><%= s.email %></td>
+                <td><%= s.created_at ? new Date(s.created_at).toLocaleString('vi-VN') : '' %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

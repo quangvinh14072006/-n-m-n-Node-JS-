@@ -1,50 +1,53 @@
+/**
+ * Điểm vào ứng dụng (theo kiểu Express trong giáo trình / chap0304):
+ * 1) Cấu hình view tĩnh, EJS, đọc form (body-parser)
+ * 2) Session cho đăng nhập admin
+ * 3) Gắn route khách (/) và route quản trị (/admin)
+ */
+require("dotenv").config();
+const path = require("path");
 const bodyParser = require("body-parser");
 const express = require("express");
 const session = require("express-session");
+
+const { loadPublicLocals } = require("./middleware/localsMiddleware");
+const publicRoutes = require("./routes/publicRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+
 const app = express();
-const mysql = require("mysql");
-const indexRouter = require("./routes/home");
-const path = require("path");
+const PORT = process.env.PORT || 3080;
 
-// 1. Cấu hình View Engine và Folder Views
 app.set("view engine", "ejs");
-app.set("views", [
-  path.join(__dirname, "views"),
-  path.join(__dirname, "admin"),
-]);
-
-// 2. Các Middleware xử lý dữ liệu và file tĩnh
-app.use(express.static("public"));
-
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 },
-  }),
-);
-
-//Đọc dữ liệu from
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// 3. Cấu hình Session (BẮT BUỘC PHẢI ĐẶT TRƯỚC ROUTER)
 app.use(
   session({
-    secret: "chuoi_bi_mat_bat_ky",
+    secret: process.env.SESSION_SECRET || "dev-quanlybaiviet-secret",
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
+    saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
   }),
 );
 
-// 4. Định nghĩa router (Sau khi đã có Session và BodyParser)
-app.use("/", indexRouter);
+app.use(loadPublicLocals);
 
-// 5. Khởi động Server
-app.listen(3000, () => {
-  console.log("Server: http://localhost:3000");
-  console.log("Admin: http://localhost:3000/login");
+app.use("/", publicRoutes);
+app.use("/admin", adminRoutes);
+
+app.use((err, req, res, next) => {
+  if (err && err.message === "Chỉ chấp nhận file ảnh") {
+    req.session.flash = { type: "danger", text: err.message };
+    return res.redirect(req.get("referer") || "/admin/posts");
+  }
+  console.error(err);
+  res.status(500).send("Lỗi máy chủ. Kiểm tra kết nối CSDL và migration.");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server: http://localhost:${PORT}`);
+  console.log(`Admin:  http://localhost:${PORT}/admin/login`);
 });

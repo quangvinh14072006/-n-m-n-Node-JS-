@@ -1,98 +1,79 @@
-<!-- Topbar Start -->
+<% const wi = typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo : {}; %>
+<!-- Topbar -->
 <div class="container-fluid d-none d-lg-block">
     <div class="row align-items-center bg-dark px-lg-5">
         <div class="col-lg-9">
-            <nav class="navbar navbar-expand-sm bg-dark p-0">
+            <nav class="navbar navbar-expand-sm bg-dark p-0" aria-label="Thanh liên kết phụ">
                 <ul class="navbar-nav ml-n2">
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" id="DateTime" href="#">
-                        </a>
+                        <span class="nav-link text-body small"><%= new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></span>
                     </li>
-                    
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="/contact">Liên hệ</a>
+                        <a class="nav-link text-body small" href="/lien-he">Liên hệ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-body small" href="/login">Quản trị</a>
+                        <a class="nav-link text-body small" href="/admin/login">Quản trị</a>
                     </li>
                 </ul>
             </nav>
         </div>
         <div class="col-lg-3 text-right d-none d-md-block">
-            <nav class="navbar navbar-expand-sm bg-dark p-0">
+            <nav class="navbar navbar-expand-sm bg-dark p-0" aria-label="Mạng xã hội">
                 <ul class="navbar-nav ml-auto mr-n2">
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-twitter"></small></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-facebook-f"></small></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-linkedin-in"></small></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-instagram"></small></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-google-plus-g"></small></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body" href="#"><small class="fab fa-youtube"></small></a>
-                    </li>
+                    <% if (wi.facebook_link) { %>
+                    <li class="nav-item"><a class="nav-link text-body" href="<%= wi.facebook_link %>" rel="noopener noreferrer" target="_blank" aria-label="Facebook"><small class="fab fa-facebook-f"></small></a></li>
+                    <% } %>
+                    <% if (wi.youtube_link) { %>
+                    <li class="nav-item"><a class="nav-link text-body" href="<%= wi.youtube_link %>" rel="noopener noreferrer" target="_blank" aria-label="YouTube"><small class="fab fa-youtube"></small></a></li>
+                    <% } %>
                 </ul>
             </nav>
         </div>
     </div>
     <div class="row align-items-center bg-white py-3 px-lg-5">
         <div class="col-lg-4">
-            <a href="/home" class="navbar-brand p-0 d-none d-lg-block">
-                <h1 class="m-0 display-4 text-uppercase text-primary">Biz<span
-                        class="text-secondary font-weight-normal">News</span></h1>
+            <a href="/" class="navbar-brand p-0 d-none d-lg-block">
+                <h1 class="m-0 display-4 text-uppercase text-primary">Biz<span class="text-secondary font-weight-normal">News</span></h1>
             </a>
+        </div>
+        <div class="col-lg-8 text-center text-lg-right d-none d-lg-block">
+            <a href="/tin-tuc"><img class="img-fluid" src="/img/ads-728x90.png" alt=""></a>
         </div>
     </div>
 </div>
-<!-- Topbar End -->
 
-
-<!-- Navbar Start -->
-<div class="container-fluid p-0">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
-        <a href="/home" class="navbar-brand d-block d-lg-none">
-            <h1 class="m-0 display-4 text-uppercase text-primary">Biz<span
-                    class="text-white font-weight-normal">News</span></h1>
+<!-- Navbar -->
+<header class="container-fluid p-0" role="banner">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5" aria-label="Menu chính">
+        <a href="/" class="navbar-brand d-block d-lg-none">
+            <span class="m-0 display-4 text-uppercase text-primary">Biz<span class="text-white font-weight-normal">News</span></span>
         </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Mở menu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
-                <a href="/home" class="nav-item nav-link <%= path === '/home' ? 'active' : '' %>">Trang chủ</a>
-                <a href="/category" class="nav-item nav-link <%= path === '/category' ? 'active' : '' %>">Tin tức</a>
-                <a href="/single-news" class="nav-item nav-link <%= path === '/single-news' ? 'active' : '' %>">Danh sách danh mục</a>
+                <a href="/" class="nav-item nav-link">Trang chủ</a>
+                <a href="/tin-tuc" class="nav-item nav-link">Tin tức</a>
+                <a href="/danh-muc" class="nav-item nav-link">Danh sách danh mục</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chủ đề</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chủ đề</a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <% allCategories.forEach(cate=> { %>
-                            <a href="/category/<%= cate.id %>" class="dropdown-item">
-                                <%= cate.name %>
-                            </a>
-                            <% }) %>
+                        <% (typeof allCategories !== 'undefined' ? allCategories : []).forEach(function(cate) { %>
+                            <a href="/tin-tuc?category_id=<%= cate.id %>" class="dropdown-item"><%= cate.name %></a>
+                        <% }); %>
                     </div>
                 </div>
-                <a href="/contact" class="nav-item nav-link <%= path === '/contact' ? 'active' : '' %>">Liên hệ</a>
+                <a href="/lien-he" class="nav-item nav-link">Liên hệ</a>
             </div>
-            <!-- Thực hiện chức năng tìm kiếm -->
-            <form action="/search" method="GET" class="input-group ml-auto d-none d-lg-flex"
-                style="width: 100%; max-width: 300px;">
-                <input type="text" name="keyword" class="form-control border-0" placeholder="Tìm kiếm">
+            <form action="/tin-tuc" method="GET" class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;" role="search" aria-label="Tìm kiếm tin">
+                <input type="text" name="keyword" class="form-control border-0" placeholder="Tìm kiếm tin" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>">
                 <div class="input-group-append">
-                    <button type="submit" class="input-group-text bg-primary text-dark border-0 px-3">
-                        <i class="fa fa-search"></i></button>
+                    <button type="submit" class="input-group-text bg-primary text-dark border-0 px-3" aria-label="Gửi tìm kiếm">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
                 </div>
             </form>
-
         </div>
     </nav>
-</div>
-<!-- Navbar End -->
+</header>

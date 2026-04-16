@@ -1,0 +1,27 @@
+<h1 class="h2 mb-4">Bảng điều khiển</h1>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 card-title">Tổng bài viết</h2>
+                <p class="display-4"><%= typeof postTotal !== 'undefined' ? postTotal : 0 %></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 card-title">Liên hệ</h2>
+                <p class="display-4"><%= typeof contactTotal !== 'undefined' ? contactTotal : 0 %></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 card-title">Liên hệ chưa xem</h2>
+                <p class="display-4 text-warning"><%= typeof pendingContacts !== 'undefined' ? pendingContacts : 0 %></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+/* Hiển thị nội dung HTML từ CKEditor */
+.article-body.ck-content img {
+  max-width: 100%;
+  height: auto;
+}
+.article-body.ck-content table {
+  max-width: 100%;
+}

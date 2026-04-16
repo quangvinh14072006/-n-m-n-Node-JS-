@@ -1,0 +1,22 @@
+<h1 class="h2 mb-4">Chi tiết liên hệ #<%= contact.id %></h1>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <p><strong>Họ tên:</strong> <%= contact.name %></p>
+        <p><strong>Email:</strong> <%= contact.email %></p>
+        <p><strong>Điện thoại:</strong> <%= contact.phone || '—' %></p>
+        <p><strong>Chủ đề:</strong> <%= contact.subject || '—' %></p>
+        <p><strong>Ngày gửi:</strong> <%= contact.created_at ? new Date(contact.created_at).toLocaleString('vi-VN') : '' %></p>
+        <hr>
+        <p class="mb-0"><strong>Nội dung:</strong></p>
+        <p class="border p-3 bg-light"><%= contact.message %></p>
+    </div>
+</div>
+<form method="POST" action="/admin/contacts/<%= contact.id %>/status" class="mb-3" onsubmit="return confirm('Cập nhật trạng thái duyệt?');">
+    <label>Trạng thái</label>
+    <select name="reviewed" class="form-control d-inline-block w-auto mr-2">
+        <option value="0" <%= !contact.reviewed ? 'selected' : '' %>>Chưa xem</option>
+        <option value="1" <%= contact.reviewed ? 'selected' : '' %>>Đã xem / đã duyệt</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>
+<a href="/admin/contacts" class="btn btn-secondary">Quay lại</a>

@@ -1,0 +1,13 @@
+<section class="container-fluid mt-5 pt-3" aria-labelledby="cat-list-title">
+    <div class="container">
+        <h1 id="cat-list-title" class="mb-4 text-uppercase font-weight-bold">Danh sách danh mục</h1>
+        <div class="list-group">
+            <% (typeof categories !== 'undefined' ? categories : []).forEach(function(c) { %>
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="/tin-tuc?category_id=<%= c.id %>">
+                    <span><%= c.name %></span>
+                    <span class="badge badge-primary badge-pill">Xem bài</span>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+</section>

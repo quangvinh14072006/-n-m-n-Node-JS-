@@ -1,23 +1,37 @@
 <div class="container login-container">
-    <form id="login-content" class="form-content" action="/login" method="POST">
-    <% if (typeof error !== 'undefined' && error) { %>
-        <div class="alert alert-danger" style="color: red; margin-bottom: 15px;">
-            <%= error %>
-        </div>
-    <% } %>
 
-    <div class="mb-3">
-        <label>User name</label> <input type="text" class="form-control" id="input-login-username" name="username"
-            placeholder="Nhập tên đăng nhập (vd: quocbao)" required>
-    </div>
-    <div class="mb-3">
-        <label>Password</label>
-        <input type="password" class="form-control" id="input-login-password" name="password"
-            placeholder="Enter password" required>
-    </div>
-    <div class="text-end mb-3">
-        <a href="#" class="text-secondary text-decoration-none">Forgot password?</a>
-    </div>
-    <button type="submit" class="btn btn-primary w-100">Login</button>
-</form>
+    <form class="login-form shadow-lg">
+
+        <h3 class="text-center mb-4">
+            Login
+        </h3>
+
+        <div class="mb-3">
+            <label>Email address</label>
+
+            <input type="email" class="form-control" placeholder="Enter email">
+        </div>
+
+        <div class="mb-3">
+            <label>Password</label>
+
+            <input type="password" class="form-control" placeholder="Enter password">
+        </div>
+
+        <div class="text-end mb-3">
+            <a href="#" class="text-secondary">
+                Forgot password?
+            </a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Login
+        </button>
+
+        <a href="#" class="btn btn-outline-primary w-100">
+            Sign up
+        </a>
+
+    </form>
+
 </div>

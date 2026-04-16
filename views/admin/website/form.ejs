@@ -1,0 +1,32 @@
+<h1 class="h2 mb-4">Thông tin website (footer)</h1>
+<form method="POST" action="/admin/website" class="bg-white p-4 shadow-sm rounded" onsubmit="return confirm('Lưu thông tin hiển thị chân trang?');">
+    <div class="form-group">
+        <label>Địa chỉ</label>
+        <input type="text" name="address" class="form-control" required value="<%= info.address %>">
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required value="<%= info.email %>">
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Điện thoại</label>
+            <input type="text" name="phone" class="form-control" required value="<%= info.phone %>">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label>Link Facebook</label>
+            <input type="url" name="facebook_link" class="form-control" value="<%= info.facebook_link %>">
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Link YouTube</label>
+            <input type="url" name="youtube_link" class="form-control" value="<%= info.youtube_link %>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Dòng bản quyền (copyright)</label>
+        <input type="text" name="copyright_text" class="form-control" value="<%= info.copyright_text %>">
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>

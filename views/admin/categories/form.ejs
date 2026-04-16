@@ -1,0 +1,22 @@
+<% var isEdit = category && category.id; %>
+<h1 class="h2 mb-4"><%= isEdit ? 'Sửa danh mục' : 'Thêm danh mục' %></h1>
+<% if (typeof error !== 'undefined' && error) { %><div class="alert alert-danger"><%= error %></div><% } %>
+<form method="POST" action="<%= isEdit ? '/admin/categories/' + category.id + '/edit' : '/admin/categories/create' %>" class="bg-white p-4 shadow-sm rounded" onsubmit="return confirm('Xác nhận lưu danh mục?');">
+    <div class="form-group">
+        <label>Tên</label>
+        <input type="text" name="name" class="form-control" required value="<%= isEdit ? category.name : '' %>">
+    </div>
+    <div class="form-group">
+        <label>Slug (để trống để tự sinh)</label>
+        <input type="text" name="slug" class="form-control" value="<%= isEdit ? category.slug : '' %>">
+    </div>
+    <div class="form-group">
+        <label>Trạng thái</label>
+        <select name="status" class="form-control">
+            <option value="1" <%= isEdit && category.status === 1 ? 'selected' : '' %>>Hiển thị</option>
+            <option value="0" <%= isEdit && category.status === 0 ? 'selected' : '' %>>Ẩn</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a href="/admin/categories" class="btn btn-secondary">Hủy</a>
+</form>

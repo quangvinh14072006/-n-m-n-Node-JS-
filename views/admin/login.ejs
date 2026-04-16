@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập quản trị</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="/css/login.css" rel="stylesheet">
+</head>
+<body class="login-body">
+<div class="container login-container">
+    <form class="login-form shadow-lg" method="POST" action="/admin/login">
+        <h3 class="text-center mb-4">Đăng nhập quản trị</h3>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <div class="mb-3">
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" class="form-control" id="username" name="username" required autocomplete="username">
+        </div>
+        <div class="mb-3">
+            <label for="password">Mật khẩu</label>
+            <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+        <a href="/" class="btn btn-outline-secondary btn-block mt-2">Về trang chủ</a>
+    </form>
+</div>
+</body>
+</html>

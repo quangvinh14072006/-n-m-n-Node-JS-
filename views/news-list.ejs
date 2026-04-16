@@ -1,0 +1,65 @@
+<section class="container-fluid mt-5 pt-3" aria-labelledby="news-list-title">
+    <div class="container">
+        <header class="mb-4">
+            <h1 id="news-list-title" class="m-0 text-uppercase font-weight-bold">Danh sách tin tức</h1>
+            <p class="text-muted mt-2 mb-0">Tìm thấy <strong><%= typeof total !== 'undefined' ? total : 0 %></strong> bài viết.</p>
+        </header>
+
+        <form class="card card-body mb-4" method="GET" action="/tin-tuc" role="search" aria-label="Lọc tin tức">
+            <div class="form-row align-items-end">
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <label for="f_keyword">Từ khóa</label>
+                    <input id="f_keyword" type="text" name="keyword" class="form-control" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>" placeholder="Tiêu đề, tóm tắt...">
+                </div>
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <label for="f_cat">Chủ đề</label>
+                    <select id="f_cat" name="category_id" class="form-control">
+                        <option value="">Tất cả</option>
+                        <% (typeof categories !== 'undefined' ? categories : []).forEach(function(c) { %>
+                            <option value="<%= c.id %>" <%= String(categoryId) === String(c.id) ? 'selected' : '' %>><%= c.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2 mb-md-0">
+                    <label for="f_from">Từ ngày</label>
+                    <input id="f_from" type="date" name="date_from" class="form-control" value="<%= typeof dateFrom !== 'undefined' ? dateFrom : '' %>">
+                </div>
+                <div class="col-md-2 mb-2 mb-md-0">
+                    <label for="f_to">Đến ngày</label>
+                    <input id="f_to" type="date" name="date_to" class="form-control" value="<%= typeof dateTo !== 'undefined' ? dateTo : '' %>">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-block">Lọc</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <% (typeof posts !== 'undefined' ? posts : []).forEach(function(post) { %>
+                <div class="col-lg-4 col-md-6"><%- include('partials/post-card', { post: post }) %></div>
+            <% }); %>
+        </div>
+
+        <% if (!posts || !posts.length) { %>
+            <p class="text-muted">Không có bài viết phù hợp.</p>
+        <% } %>
+
+        <% 
+          var tp = typeof totalPages !== 'undefined' ? totalPages : 1;
+          var p = typeof page !== 'undefined' ? page : 1;
+          var fq = typeof filterQueryPrefix !== 'undefined' && filterQueryPrefix ? filterQueryPrefix + '&' : '';
+          function qPage(n) { return '/tin-tuc?' + fq + 'page=' + n; }
+        %>
+        <% if (tp > 1) { %>
+        <nav aria-label="Phân trang">
+            <ul class="pagination justify-content-center">
+                <% if (p > 1) { %><li class="page-item"><a class="page-link" href="<%= qPage(p-1) %>">Trước</a></li><% } %>
+                <% for (var i = 1; i <= tp; i++) { %>
+                    <li class="page-item <%= i === p ? 'active' : '' %>"><a class="page-link" href="<%= qPage(i) %>"><%= i %></a></li>
+                <% } %>
+                <% if (p < tp) { %><li class="page-item"><a class="page-link" href="<%= qPage(p+1) %>">Sau</a></li><% } %>
+            </ul>
+        </nav>
+        <% } %>
+    </div>
+</section>

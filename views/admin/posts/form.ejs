@@ -1,0 +1,53 @@
+<% var isEdit = post && post.id; %>
+<h1 class="h2 mb-4"><%= isEdit ? 'Sửa bài viết' : 'Thêm bài viết' %></h1>
+<% if (typeof error !== 'undefined' && error) { %><div class="alert alert-danger"><%= error %></div><% } %>
+<form method="POST" enctype="multipart/form-data" action="<%= isEdit ? '/admin/posts/' + post.id + '/edit' : '/admin/posts/create' %>" class="bg-white p-4 shadow-sm rounded" onsubmit="return confirm('Xác nhận lưu bài viết?');">
+    <div class="form-group">
+        <label>Tiêu đề</label>
+        <input type="text" name="title" class="form-control" required value="<%= isEdit ? post.title : '' %>">
+    </div>
+    <div class="form-group">
+        <label>Tóm tắt</label>
+        <textarea name="summary" class="form-control" rows="2" required><%= isEdit ? post.summary : '' %></textarea>
+    </div>
+    <div class="form-group">
+        <label>Nội dung (CKEditor — hiển thị HTML)</label>
+        <textarea name="content" id="postContent" class="form-control" rows="12" required><%= isEdit ? post.content : '' %></textarea>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label>Ảnh đại diện — tải file</label>
+            <input type="file" name="image" class="form-control-file" accept="image/*">
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Hoặc đường dẫn ảnh (URL hoặc /img/...)</label>
+            <input type="text" name="image_url" class="form-control" value="<%= isEdit ? post.image : '' %>" placeholder="/img/news-700x435-1.jpg">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label>Danh mục</label>
+            <select name="category_id" class="form-control" required>
+                <% (typeof categories !== 'undefined' ? categories : []).forEach(function(c) { %>
+                    <option value="<%= c.id %>" <%= isEdit && String(post.category_id) === String(c.id) ? 'selected' : '' %>><%= c.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Trạng thái</label>
+            <select name="status" class="form-control">
+                <option value="1" <%= isEdit && post.status === 1 ? 'selected' : '' %>>Đã đăng</option>
+                <option value="0" <%= isEdit && post.status === 0 ? 'selected' : '' %>>Nháp</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a href="/admin/posts" class="btn btn-secondary">Hủy</a>
+</form>
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('postContent', {
+        height: 360,
+        versionCheck: false
+    });
+</script>

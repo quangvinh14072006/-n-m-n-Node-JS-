@@ -3,7 +3,7 @@ const db = require("../config/database"); // Đảm bảo file kết nối DB n�
 const homeController = {
   // Trang chủ
   getHomePage: (req, res) => {
-    const sql = "SELECT * FROM categories";
+    const sql = "SELECT * FROM posts";
     db.query(sql, (err, result) => {
       if (err) return res.status(500).send("Lỗi kết nối CSDL");
       res.render("layout", { path: "/home", content: "index", news: result });

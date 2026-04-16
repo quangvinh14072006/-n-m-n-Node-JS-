@@ -8,14 +8,12 @@
                         <a class="nav-link text-body small" id="DateTime" href="#">
                         </a>
                     </li>
+                    
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="#">Advertise</a>
-                    </li>
-                    <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="/contact">Contact</a>
+                        <a class="nav-link text-body small" href="/contact">Liên hệ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-body small" href="/login">Login</a>
+                        <a class="nav-link text-body small" href="/login">Quản trị</a>
                     </li>
                 </ul>
             </nav>
@@ -71,9 +69,9 @@
             <div class="navbar-nav mr-auto py-0">
                 <a href="/home" class="nav-item nav-link <%= path === '/home' ? 'active' : '' %>">Trang chủ</a>
                 <a href="/category" class="nav-item nav-link <%= path === '/category' ? 'active' : '' %>">Tin tức</a>
-                <a href="/single-news" class="nav-item nav-link <%= path === '/single-news' ? 'active' : '' %>">Single News</a>
+                <a href="/single-news" class="nav-item nav-link <%= path === '/single-news' ? 'active' : '' %>">Danh sách danh mục</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chủ đề</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <% allCategories.forEach(cate=> { %>
                             <a href="/category/<%= cate.id %>" class="dropdown-item">

@@ -15,4 +15,6 @@ async function RenderHome(req, res, next) {
     next(e);
   }
 }
+
+
 module.exports = { RenderHome };

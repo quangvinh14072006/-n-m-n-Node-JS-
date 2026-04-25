@@ -19,5 +19,13 @@ async function getLatestNews(limit = 6) {
     [limit],
   );
 }
+//Lấy chi tiết bài viết bằng id
+async function getNewsByid(id) {
+  const rows = await query(
+    "select news.* , categories.name from news left join categories on news.category_id=categories.id where news.id = ?",
+    [id],
+  );
+  return rows[0] || null;
+}
 
-module.exports = { getAllNews, getLatestNews };
+module.exports = { getAllNews, getLatestNews,getNewsByid };

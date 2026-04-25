@@ -1,0 +1,60 @@
+<div class="container-fluid pt-5 mb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mb-3" style="font-weight: bold; color: #333; font-size: 28px;"><%= news.title %></h1>
+                <div class="d-flex align-items-center mb-3 text-muted">
+                    <small class="mr-3"><i class="far fa-calendar-alt mr-1"></i><%= new Date(news.created_at).toLocaleDateString('vi-VN') %></small>
+                    <small class="mr-3"><i class="far fa-user mr-1"></i><%= news.author || 'Admin' %></small>
+                    <small class="mr-3"><i class="far fa-eye mr-1"></i><%= news.views || 0 %> lượt xem</small>
+                    <span class="badge badge-primary"><%= news.category_name %></span>
+                </div>
+                <img class="img-fluid w-100 mb-4 shadow-sm" src="/client/img/<%= news.image %>" alt="<%= news.title %>" style="border-radius: 8px;">
+                <div class="content mb-5" style="line-height: 1.8; font-size: 17px; color: #444;">
+                    <% if(news.summary) { %><p class="lead"><strong><%= news.summary %></strong></p><hr><% } %>
+                    <div class="main-text"><%- news.content %></div>
+                </div>
+                <div id="comments" class="mb-5">
+                    <div class="section-title">
+                        <h4 class="m-0 text-uppercase font-weight-bold"><i class="fas fa-comments text-primary mr-2"></i>Bình luận (<%= typeof comments !== 'undefined' ? comments.length : 0 %>)</h4>
+                    </div>
+                    <% if(typeof comments !== 'undefined' && comments.length > 0) { %>
+                        <% comments.forEach(c => { %>
+                            <div class="bg-white border p-3 mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <strong><i class="far fa-user mr-1"></i><%= c.email %></strong>
+                                    <small class="text-muted"><%= new Date(c.created_at).toLocaleDateString('vi-VN') %></small>
+                                </div>
+                                <p class="mb-0"><%= c.content %></p>
+                            </div>
+                        <% }) %>
+                    <% } else { %><p class="text-muted">Chưa có bình luận nào.</p><% } %>
+                    <div class="bg-white border p-4 mt-4">
+                        <h5 class="font-weight-bold mb-3">Để lại bình luận</h5>
+                        <form action="/tin-tuc/<%= news.id %>/binh-luan" method="POST">
+                            <div class="form-group">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nội dung <span class="text-danger">*</span></label>
+                                <textarea name="content" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="far fa-paper-plane mr-1"></i>Gửi</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="mb-3">
+                    <div class="section-title mb-0"><h4 class="m-0 text-uppercase font-weight-bold">Chuyên mục</h4></div>
+                    <div class="bg-white border border-top-0 p-3">
+                        <% if(typeof categories !== 'undefined') { categories.forEach(cat => { %>
+                            <a href="/chuyen-muc/<%= cat.id %>" class="btn btn-sm btn-secondary m-1"><%= cat.name %></a>
+                        <% }) } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

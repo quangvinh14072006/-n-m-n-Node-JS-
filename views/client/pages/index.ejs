@@ -1,0 +1,75 @@
+<!-- SECTION 1: BÀI VIẾT MỚI NHẤT -->
+<div class="container-fluid pt-5 mb-3">
+    <div class="container">
+        <div class="section-title">
+            <h4 class="m-0 text-uppercase font-weight-bold">
+                <i class="fas fa-bolt text-primary mr-2"></i>Mới nhất
+            </h4>
+        </div>
+        <div class="row">
+            <% if(lastNews && lastNews.length> 0) { %>
+                <!-- Bài viết nổi bật (bài đầu tiên, hiển thị lớn) -->
+                <div class="col-lg-6 mb-4">
+                    <div class="position-relative overflow-hidden" style="height: 100%; min-height: 400px;">
+                        <img class="img-fluid w-100 h-100" src="/client/img/<%= lastNews[0].image %>"
+                            alt="<%= lastNews[0].title %>" style="object-fit: cover;">
+                        <div class="overlay position-absolute w-100"
+                            style="bottom: 0; left: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); padding: 25px;">
+                            <span class="badge badge-primary text-uppercase p-2 mb-2">
+                                <%= lastNews[0].category_name %>
+                            </span>
+                            <a class="h3 text-white d-block mb-2" href="/tin-tuc/<%= lastNews[0].id %>">
+                                <%= lastNews[0].title %>
+                            </a>
+                            <p class="text-white-50 mb-0">
+                                <small><i class="far fa-calendar-alt mr-1"></i>
+                                    <%= new Date(lastNews[0].created_at).toLocaleDateString('vi-VN') %>
+                                </small>
+                                <small class="ml-3"><i class="far fa-eye mr-1"></i>
+                                    <%= lastNews[0].views || 0 %> lượt xem
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Các bài viết còn lại -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <% lastNews.slice(1, 5).forEach(news=> { %>
+                            <div class="col-md-6 mb-4">
+                                <div class="bg-white border" style="height: 100%;">
+                                    <div style="height: 160px; overflow: hidden;">
+                                        <img src="/client/img/<%= news.image %>" alt="<%= news.title %>"
+                                            class="img-fluid w-100" style="height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div class="p-3">
+                                        <span class="badge badge-primary text-uppercase mb-2">
+                                            <%= news.category_name %>
+                                        </span>
+                                        <a class="font-weight-bold d-block mb-2" href="/tin-tuc/<%= news.id %>"
+                                            style="font-size: 14px; height: 40px; overflow: hidden; color: #333;">
+                                            <%= news.title %>
+                                        </a>
+                                        <small class="text-muted">
+                                            <i class="far fa-calendar-alt mr-1"></i>
+                                            <%= new Date(news.created_at).toLocaleDateString('vi-VN') %>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="col-12">
+                        <p class="text-muted text-center py-5">Chưa có bài viết nào.</p>
+                    </div>
+                    <% } %>
+        </div>
+        <div class="section-title">
+            <h4 class="m-0 text-uppercase font-weight-bold">
+                <i class="fas fa-bolt text-primary mr-2"></i>Xem nhiều nhất
+            </h4>
+        </div>
+    </div>
+</div>

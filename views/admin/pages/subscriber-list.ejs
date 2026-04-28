@@ -1,0 +1,29 @@
+<h2 class="page-title"><i class="fas fa-bell mr-2"></i>Quản lý Newsletter</h2>
+
+<% if(typeof success !== 'undefined' && success) { %>
+    <% if(success === 'delete') { %><div class="alert alert-success admin-alert">Xóa subscriber thành công!</div><% } %>
+<% } %>
+
+<div class="admin-form mb-3">
+    <p>Tổng số email đăng ký: <strong><%= subscribers ? subscribers.length : 0 %></strong></p>
+</div>
+
+<div class="admin-table">
+    <table class="table">
+        <thead><tr><th>STT</th><th>Email</th><th>Ngày đăng ký</th><th>Thao tác</th></tr></thead>
+        <tbody>
+            <% if(subscribers && subscribers.length > 0) { subscribers.forEach((s, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><strong><%= s.email %></strong></td>
+                    <td><%= new Date(s.created_at).toLocaleDateString('vi-VN') %></td>
+                    <td>
+                        <a href="/admin/subscribers/xoa/<%= s.id %>" class="btn btn-sm btn-danger" onclick="return confirm('Xóa subscriber này?')"><i class="fas fa-trash"></i> Xóa</a>
+                    </td>
+                </tr>
+            <% }) } else { %>
+                <tr><td colspan="4" class="text-center text-muted py-4">Chưa có ai đăng ký</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>

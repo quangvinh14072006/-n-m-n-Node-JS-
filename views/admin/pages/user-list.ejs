@@ -1,0 +1,97 @@
+<h2 class="page-title"><i class="fas fa-users mr-2"></i>Quản lý người dùng</h2>
+
+<% if(typeof success !== 'undefined' && success) { %>
+    <% if(success === 'add') { %><div class="alert alert-success admin-alert">Thêm người dùng thành công!</div><% } %>
+    <% if(success === 'edit') { %><div class="alert alert-success admin-alert">Cập nhật thành công!</div><% } %>
+    <% if(success === 'delete') { %><div class="alert alert-success admin-alert">Xóa thành công!</div><% } %>
+    <% if(success === 'reset') { %><div class="alert alert-info admin-alert">Reset mật khẩu thành 123456 thành công!</div><% } %>
+    <% if(success === 'error_exists') { %><div class="alert alert-danger admin-alert">Tên đăng nhập đã tồn tại!</div><% } %>
+    <% if(success === 'error_self') { %><div class="alert alert-danger admin-alert">Không thể xóa chính mình!</div><% } %>
+<% } %>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="admin-form">
+            <h5 class="font-weight-bold mb-3">
+                <%= typeof editUser !== 'undefined' ? 'Sửa người dùng' : 'Thêm người dùng mới' %>
+            </h5>
+            <% if(typeof editUser !== 'undefined') { %>
+                <form method="POST" action="/admin/nguoi-dung/sua/<%= editUser.user_id %>">
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" class="form-control" value="<%= editUser.user_name %>" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Họ tên <span class="text-danger">*</span></label>
+                        <input type="text" name="fullname" class="form-control" value="<%= editUser.fullname %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" value="<%= editUser.email || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Quyền</label>
+                        <select name="role" class="form-control">
+                            <option value="0" <%= editUser.role == 0 ? 'selected' : '' %>>Người dùng</option>
+                            <option value="1" <%= editUser.role == 1 ? 'selected' : '' %>>Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save mr-1"></i>Cập nhật</button>
+                    <a href="/admin/nguoi-dung" class="btn btn-secondary btn-block mt-2">Hủy</a>
+                </form>
+            <% } else { %>
+                <form method="POST" action="/admin/nguoi-dung/them">
+                    <div class="form-group">
+                        <label>Tên đăng nhập <span class="text-danger">*</span></label>
+                        <input type="text" name="user_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu <span class="text-danger">*</span></label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Họ tên <span class="text-danger">*</span></label>
+                        <input type="text" name="fullname" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Quyền</label>
+                        <select name="role" class="form-control">
+                            <option value="0">Người dùng</option>
+                            <option value="1">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-plus mr-1"></i>Thêm mới</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="admin-table">
+            <table class="table">
+                <thead><tr><th>ID</th><th>Tên đăng nhập</th><th>Họ tên</th><th>Email</th><th>Quyền</th><th>Thao tác</th></tr></thead>
+                <tbody>
+                    <% if(users && users.length > 0) { users.forEach(u => { %>
+                        <tr>
+                            <td><%= u.user_id %></td>
+                            <td><strong><%= u.user_name %></strong></td>
+                            <td><%= u.fullname %></td>
+                            <td><%= u.email || 'N/A' %></td>
+                            <td><span class="<%= u.role == 1 ? 'status-active' : 'status-inactive' %>"><%= u.role == 1 ? 'Admin' : 'User' %></span></td>
+                            <td>
+                                <a href="/admin/nguoi-dung/sua/<%= u.user_id %>" class="btn btn-sm btn-warning" title="Sửa"><i class="fas fa-edit"></i></a>
+                                <a href="/admin/nguoi-dung/reset/<%= u.user_id %>" class="btn btn-sm btn-info" title="Reset mật khẩu" onclick="return confirm('Reset mật khẩu về 123456?')"><i class="fas fa-key"></i></a>
+                                <a href="/admin/nguoi-dung/xoa/<%= u.user_id %>" class="btn btn-sm btn-danger" title="Xóa" onclick="return confirm('Xóa người dùng này?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    <% }) } else { %>
+                        <tr><td colspan="6" class="text-center text-muted py-4">Chưa có người dùng nào</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

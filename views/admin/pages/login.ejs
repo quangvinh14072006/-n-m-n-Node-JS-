@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - BizNews Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: #fff; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 40px; width: 100%; max-width: 420px; }
+        .login-card h2 { font-weight: 700; color: #1a1a2e; text-align: center; margin-bottom: 5px; }
+        .login-card p { text-align: center; color: #888; margin-bottom: 30px; }
+        .login-card .brand { text-align: center; margin-bottom: 25px; font-size: 28px; font-weight: 700; }
+        .login-card .brand span { color: #ffc107; }
+        .form-group label { font-weight: 600; font-size: 14px; color: #333; }
+        .form-control { border-radius: 8px; padding: 12px 15px; border: 2px solid #e0e0e0; transition: 0.3s; }
+        .form-control:focus { border-color: #ffc107; box-shadow: 0 0 0 0.15rem rgba(255,193,7,0.25); }
+        .btn-login { background: linear-gradient(135deg, #ffc107, #ff9800); border: none; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 16px; width: 100%; color: #1a1a2e; transition: 0.3s; }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,193,7,0.4); }
+        .back-link { text-align: center; margin-top: 20px; }
+        .back-link a { color: #888; text-decoration: none; font-size: 14px; }
+        .back-link a:hover { color: #ffc107; }
+        .alert { border-radius: 8px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand"><span>Biz</span>News</div>
+        <h2>Đăng nhập</h2>
+        <p>Quản trị hệ thống</p>
+        
+        <% if(typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger"><i class="fas fa-exclamation-circle mr-1"></i><%= error %></div>
+        <% } %>
+
+        <form method="POST" action="/admin/dang-nhap">
+            <div class="form-group">
+                <label><i class="far fa-user mr-1"></i>Tên đăng nhập</label>
+                <input type="text" class="form-control" name="user_name" required autocomplete="username" placeholder="Nhập tên đăng nhập">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-lock mr-1"></i>Mật khẩu</label>
+                <input type="password" class="form-control" name="password" required placeholder="Nhập mật khẩu">
+            </div>
+            <button type="submit" class="btn btn-login">
+                <i class="fas fa-sign-in-alt mr-1"></i>Đăng nhập
+            </button>
+        </form>
+        <div class="back-link">
+            <a href="/"><i class="fas fa-arrow-left mr-1"></i>Về trang chủ</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,9 +1,20 @@
 {
+  "name": "biznews-mvc",
+  "version": "1.0.0",
+  "description": "Website tin tuc BizNews - Mo hinh MVC",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
     "dotenv": "^17.4.2",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "multer": "^1.4.5-lts.2",
     "mysql": "^2.18.1"
   }
 }

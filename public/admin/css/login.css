@@ -1,0 +1,98 @@
+/* Import font chữ hiện đại */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+.login-body{
+    display:flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background:linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size:400% 400% ;
+    animation: gradient 15s ease infinite;
+}
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Bo góc và hiệu ứng kính mờ cho container */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Tiêu đề hoặc nhãn */
+.form-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Style cho ô Input */
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    border-color: #23a6d5;
+    box-shadow: 0 0 8px rgba(35, 166, 213, 0.3);
+}
+
+/* Nút đăng nhập "sang chảnh" */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #23a6d5, #23d5ab);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s;
+    margin-bottom: 15px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(35, 166, 213, 0.4);
+    opacity: 0.9;
+}
+
+/* Link về trang chủ */
+.buttom-vetrangchu {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #888;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.buttom-vetrangchu:hover {
+    color: #444;
+    text-decoration: underline;
+}

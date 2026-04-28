@@ -1,0 +1,103 @@
+<!-- Thêm đoạn này vào đầu file để tránh lỗi undefined -->
+<% 
+    keyword = typeof keyword !== 'undefined' ? keyword : '';
+    categoryId = typeof categoryId !== 'undefined' ? categoryId : '';
+    status = typeof status !== 'undefined' ? status : '';
+%>
+
+<h2 class="page-title"><i class="fas fa-newspaper mr-2"></i>Quản lý bài viết</h2>
+
+<div class="bg-white border rounded p-3 mb-3">
+    <form action="/admin/bai-viet" method="GET" class="form-inline flex-wrap">
+        <div class="form-group mr-2 mb-2">
+            <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm..." value="<%= keyword %>">
+        </div>
+        <div class="form-group mr-2 mb-2">
+            <select name="category_id" class="form-control">
+                <option value="">-- Tất cả chuyên mục --</option>
+                <% if(typeof categories !== 'undefined') { %>
+                    <% categories.forEach(c => { %>
+                        <option value="<%= c.id %>" <%= categoryId == c.id ? 'selected' : '' %>><%= c.name %></option>
+                    <% }) %>
+                <% } %>
+            </select>
+        </div>
+        <div class="form-group mr-2 mb-2">
+            <select name="status" class="form-control">
+                <option value="">-- Trạng thái --</option>
+                <option value="1" <%= status == '1' ? 'selected' : '' %>>Hiển thị</option>
+                <option value="0" <%= status == '0' ? 'selected' : '' %>>Ẩn</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 mr-2"><i class="fa fa-search mr-1"></i>Lọc</button>
+        <a href="/admin/bai-viet/them" class="btn btn-success mb-2"><i class="fa fa-plus mr-1"></i>Thêm bài viết</a>
+    </form>
+</div>
+
+<p class="text-muted">Tổng: <strong><%= typeof totalNews !== 'undefined' ? totalNews : 0 %></strong> bài viết</p>
+
+<div class="admin-table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hình</th>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Chuyên mục</th>
+                <th>Ngày đăng</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(typeof newsList !== 'undefined' && newsList.length > 0) { %>
+                <% newsList.forEach(n => { %>
+                    <tr>
+                        <td><img src="/client/img/<%= n.image || 'no-image.png' %>" class="news-thumbnail" style="width: 80px; height: 50px; object-fit: cover;"></td>
+                        <td style="max-width:250px;"><%= n.title %></td>
+                        <td><%= n.author || 'Admin' %></td>
+                        <td><span class="badge badge-info"><%= n.category_name || 'N/A' %></span></td>
+                        <td><small><%= n.created_at ? new Date(n.created_at).toLocaleDateString('vi-VN') : 'N/A' %></small></td>
+                        <td>
+                            <span class="badge <%= n.status == 1 ? 'badge-success' : 'badge-secondary' %>" style="cursor:pointer;" 
+                                  onclick="toggleStatus(<%= n.id %>, <%= n.status == 1 ? 0 : 1 %>)">
+                                <%= n.status == 1 ? 'Hiển thị' : 'Ẩn' %>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/admin/bai-viet/sua/<%= n.id %>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                            <a href="/admin/bai-viet/xoa/<%= n.id %>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="7" class="text-center text-muted py-4">Không có bài viết nào</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Phần Phân trang cần kiểm tra kỹ totalPages -->
+<% if(typeof totalPages !== 'undefined' && totalPages > 1) { %>
+    <nav class="mt-3">
+        <ul class="pagination justify-content-center">
+            <% if(currentPage > 1) { %>
+                <li class="page-item">
+                    <a class="page-link" href="/admin/bai-viet?page=<%= currentPage-1 %>&keyword=<%= keyword %>&category_id=<%= categoryId %>&status=<%= status %>">&laquo;</a>
+                </li>
+            <% } %>
+            
+            <% for(let i=1; i<=totalPages; i++) { %>
+                <li class="page-item <%= i === parseInt(currentPage) ? 'active' : '' %>">
+                    <a class="page-link" href="/admin/bai-viet?page=<%= i %>&keyword=<%= keyword %>&category_id=<%= categoryId %>&status=<%= status %>"><%= i %></a>
+                </li>
+            <% } %>
+
+            <% if(currentPage < totalPages) { %>
+                <li class="page-item">
+                    <a class="page-link" href="/admin/bai-viet?page=<%= parseInt(currentPage)+1 %>&keyword=<%= keyword %>&category_id=<%= categoryId %>&status=<%= status %>">&raquo;</a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+<% } %>

@@ -1,0 +1,79 @@
+<div class="container-fluid mt-5 pt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="section-title mb-0">
+                    <h4 class="m-0 text-uppercase font-weight-bold">Liên hệ với chúng tôi</h4>
+                </div>
+                <div class="bg-white border border-top-0 p-4 mb-3">
+                    <% if(typeof success !== 'undefined' && success === '1') { %>
+                        <div class="alert alert-success"><i class="fas fa-check-circle mr-2"></i>Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm nhất.</div>
+                    <% } %>
+                    <div class="mb-4">
+                        <h6 class="text-uppercase font-weight-bold">Thông tin liên hệ</h6>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2"><i class="fa fa-map-marker-alt text-primary mr-2"></i><h6 class="font-weight-bold mb-0">Địa chỉ</h6></div>
+                            <p class="m-0"><%= typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo.address : '123 Đường ABC, TP.HCM' %></p>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2"><i class="fa fa-envelope-open text-primary mr-2"></i><h6 class="font-weight-bold mb-0">Email</h6></div>
+                            <p class="m-0"><%= typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo.email : 'info@biznews.com' %></p>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2"><i class="fa fa-phone-alt text-primary mr-2"></i><h6 class="font-weight-bold mb-0">Điện thoại</h6></div>
+                            <p class="m-0"><%= typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo.phone : '0123 456 789' %></p>
+                        </div>
+                    </div>
+                    <h6 class="text-uppercase font-weight-bold mb-3">Gửi tin nhắn</h6>
+                    <form method="POST" action="/lien-he">
+                        <div class="form-row">
+                            <div class="col-md-6"><div class="form-group"><input type="text" name="name" class="form-control p-4" placeholder="Họ tên" required></div></div>
+                            <div class="col-md-6"><div class="form-group"><input type="email" name="email" class="form-control p-4" placeholder="Email" required></div></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6"><div class="form-group"><input type="text" name="phone" class="form-control p-4" placeholder="Số điện thoại"></div></div>
+                            <div class="col-md-6"><div class="form-group"><input type="text" name="subject" class="form-control p-4" placeholder="Tiêu đề"></div></div>
+                        </div>
+                        <div class="form-group"><textarea name="message" class="form-control" rows="4" placeholder="Nội dung" required></textarea></div>
+                        <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit">Gửi liên hệ</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="mb-3">
+                    <div class="section-title mb-0"><h4 class="m-0 text-uppercase font-weight-bold">Theo dõi</h4></div>
+                    <div class="bg-white border border-top-0 p-3">
+                        <a href="<%= typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo.facebook : '#' %>" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #39569E;">
+                            <i class="fab fa-facebook-f text-center py-4 mr-3" style="width: 65px; background: rgba(0,0,0,.2);"></i><span>Facebook</span>
+                        </a>
+                        <a href="<%= typeof websiteInfo !== 'undefined' && websiteInfo ? websiteInfo.youtube : '#' %>" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #DC472E;">
+                            <i class="fab fa-youtube text-center py-4 mr-3" style="width: 65px; background: rgba(0,0,0,.2);"></i><span>YouTube</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="section-title mb-0"><h4 class="m-0 text-uppercase font-weight-bold">Đăng ký nhận tin</h4></div>
+                    <div class="bg-white text-center border border-top-0 p-3">
+                        <p>Nhận thông báo khi có tin tức mới</p>
+                        <div class="input-group mb-2">
+                            <input type="email" id="contact-subscribe-email" class="form-control form-control-lg" placeholder="Email">
+                            <div class="input-group-append"><button id="contact-subscribe-btn" class="btn btn-primary font-weight-bold px-3">Đăng ký</button></div>
+                        </div>
+                        <small id="contact-subscribe-msg" style="display:none;"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('contact-subscribe-btn');
+    if(btn) btn.addEventListener('click', function() {
+        var e = document.getElementById('contact-subscribe-email').value, m = document.getElementById('contact-subscribe-msg');
+        if(!e){m.textContent='Nhập email!';m.className='text-danger';m.style.display='block';return;}
+        fetch('/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e})})
+        .then(r=>r.json()).then(d=>{m.textContent=d.message;m.className=d.success?'text-success':'text-danger';m.style.display='block';});
+    });
+});
+</script>

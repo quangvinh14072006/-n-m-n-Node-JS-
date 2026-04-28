@@ -1,0 +1,53 @@
+<h2 class="page-title"><i class="fas fa-edit mr-2"></i>Sửa bài viết</h2>
+<div class="admin-form">
+    <form method="POST" action="/admin/bai-viet/sua/<%= news.id %>" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="col-md-8 form-group">
+                <label>Tiêu đề bài viết <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control" value="<%= news.title %>" required>
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Chuyên mục <span class="text-danger">*</span></label>
+                <select name="category_id" class="form-control" required>
+                    <% categories.forEach(c => { %>
+                        <option value="<%= c.id %>" <%= news.category_id == c.id ? 'selected' : '' %>><%= c.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 form-group">
+                <label>Tác giả</label>
+                <input type="text" name="author" class="form-control" value="<%= news.author || 'Admin' %>">
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Trạng thái</label>
+                <select name="status" class="form-control">
+                    <option value="1" <%= news.status == 1 ? 'selected' : '' %>>Hiển thị</option>
+                    <option value="0" <%= news.status == 0 ? 'selected' : '' %>>Ẩn</option>
+                </select>
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Hình ảnh (để trống nếu không đổi)</label>
+                <input type="file" name="image" class="form-control-file" accept="image/*">
+                <small class="text-muted">Ảnh hiện tại: <%= news.image %></small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Ảnh hiện tại</label><br>
+            <img src="/client/img/<%= news.image %>" style="max-height: 150px; border-radius: 8px;" alt="">
+        </div>
+        <div class="form-group">
+            <label>Tóm tắt</label>
+            <textarea name="summary" class="form-control" rows="3"><%= news.summary || '' %></textarea>
+        </div>
+        <div class="form-group">
+            <label>Nội dung chi tiết <span class="text-danger">*</span></label>
+            <textarea name="content" class="form-control" rows="10" required><%= news.content || '' %></textarea>
+        </div>
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-save mr-1"></i>Cập nhật</button>
+            <a href="/admin/bai-viet" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>

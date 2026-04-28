@@ -1,0 +1,88 @@
+/* =============================================
+   ADMIN PANEL CSS - BizNews
+   ============================================= */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #f4f6f9; }
+
+/* WRAPPER */
+.admin-wrapper { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.admin-sidebar {
+    width: 260px; background: #1a1a2e; color: #fff;
+    position: fixed; top: 0; left: 0; height: 100vh;
+    overflow-y: auto; z-index: 1000; transition: 0.3s;
+}
+.sidebar-header {
+    padding: 20px; text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-header h3 { font-weight: 700; font-size: 24px; color: #fff; margin: 0; }
+.sidebar-menu { list-style: none; padding: 15px 0; margin: 0; }
+.sidebar-menu li a {
+    display: block; padding: 12px 25px; color: #b8b8cc;
+    text-decoration: none; font-size: 14px; transition: 0.2s;
+    border-left: 3px solid transparent;
+}
+.sidebar-menu li a:hover, .sidebar-menu li a.active {
+    background: rgba(255,255,255,0.05); color: #fff;
+    border-left-color: #ffc107;
+}
+.sidebar-menu li a i { width: 25px; margin-right: 10px; }
+
+/* MAIN */
+.admin-main { flex: 1; margin-left: 260px; }
+.admin-header {
+    background: #fff; padding: 15px 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    display: flex; align-items: center;
+}
+.admin-content { padding: 25px; }
+
+/* STAT CARDS */
+.stat-card {
+    background: #fff; border-radius: 10px; padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s; border-left: 4px solid;
+}
+.stat-card:hover { transform: translateY(-3px); }
+.stat-card .stat-icon { font-size: 40px; opacity: 0.3; }
+.stat-card .stat-number { font-size: 32px; font-weight: 700; }
+.stat-card .stat-label { color: #888; font-size: 14px; text-transform: uppercase; }
+
+/* TABLE */
+.admin-table { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+.admin-table .table { margin-bottom: 0; }
+.admin-table .table th { background: #1a1a2e; color: #fff; font-size: 13px; text-transform: uppercase; border: none; padding: 14px 12px; }
+.admin-table .table td { vertical-align: middle; font-size: 14px; padding: 12px; }
+.admin-table .table tbody tr:hover { background: #f8f9fa; }
+
+/* FORMS */
+.admin-form { background: #fff; border-radius: 8px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.admin-form label { font-weight: 600; font-size: 14px; color: #333; }
+.admin-form .form-control { border-radius: 5px; border: 1px solid #ddd; padding: 10px 15px; }
+.admin-form .form-control:focus { border-color: #ffc107; box-shadow: 0 0 0 0.2rem rgba(255,193,7,0.15); }
+
+/* BUTTONS */
+.btn-admin { padding: 8px 20px; border-radius: 5px; font-size: 14px; font-weight: 600; }
+
+/* STATUS BADGE */
+.status-active { background: #28a745; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+.status-inactive { background: #dc3545; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .admin-sidebar { left: -260px; }
+    .admin-sidebar.active { left: 0; }
+    .admin-main { margin-left: 0; }
+}
+
+/* PAGE TITLE */
+.page-title { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #ffc107; }
+
+/* THUMBNAIL */
+.news-thumbnail { width: 80px; height: 55px; object-fit: cover; border-radius: 4px; }
+
+/* ALERT */
+.admin-alert { border-radius: 8px; padding: 12px 20px; font-size: 14px; }

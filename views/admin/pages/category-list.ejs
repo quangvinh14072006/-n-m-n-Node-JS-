@@ -1,0 +1,58 @@
+<h2 class="page-title"><i class="fas fa-folder mr-2"></i>Quản lý chuyên mục</h2>
+
+<% if(typeof success !== 'undefined' && success) { %>
+    <% if(success === 'add') { %><div class="alert alert-success admin-alert">Thêm chuyên mục thành công!</div><% } %>
+    <% if(success === 'edit') { %><div class="alert alert-success admin-alert">Cập nhật thành công!</div><% } %>
+    <% if(success === 'delete') { %><div class="alert alert-success admin-alert">Xóa thành công!</div><% } %>
+    <% if(success === 'error_has_news') { %><div class="alert alert-danger admin-alert">Không thể xóa! Chuyên mục này đang có bài viết.</div><% } %>
+<% } %>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="admin-form">
+            <h5 class="font-weight-bold mb-3">
+                <%= typeof editCategory !== 'undefined' ? 'Sửa chuyên mục' : 'Thêm chuyên mục mới' %>
+            </h5>
+            <form method="POST" action="<%= typeof editCategory !== 'undefined' ? '/admin/chuyen-muc/sua/' + editCategory.id : '/admin/chuyen-muc/them' %>">
+                <div class="form-group">
+                    <label>Tên chuyên mục <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" required
+                           value="<%= typeof editCategory !== 'undefined' ? editCategory.name : '' %>">
+                </div>
+                <div class="form-group">
+                    <label>Slug (đường dẫn)</label>
+                    <input type="text" name="slug" class="form-control" placeholder="vd: cong-nghe"
+                           value="<%= typeof editCategory !== 'undefined' && editCategory.slug ? editCategory.slug : '' %>">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-save mr-1"></i><%= typeof editCategory !== 'undefined' ? 'Cập nhật' : 'Thêm mới' %>
+                </button>
+                <% if(typeof editCategory !== 'undefined') { %>
+                    <a href="/admin/chuyen-muc" class="btn btn-secondary btn-block mt-2">Hủy</a>
+                <% } %>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="admin-table">
+            <table class="table">
+                <thead><tr><th>ID</th><th>Tên chuyên mục</th><th>Slug</th><th>Thao tác</th></tr></thead>
+                <tbody>
+                    <% if(categories && categories.length > 0) { categories.forEach(c => { %>
+                        <tr>
+                            <td><%= c.id %></td>
+                            <td><strong><%= c.name %></strong></td>
+                            <td><span class="text-muted"><%= c.slug || 'N/A' %></span></td>
+                            <td>
+                                <a href="/admin/chuyen-muc/sua/<%= c.id %>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                <a href="/admin/chuyen-muc/xoa/<%= c.id %>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa chuyên mục này?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    <% }) } else { %>
+                        <tr><td colspan="4" class="text-center text-muted py-4">Chưa có chuyên mục nào</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

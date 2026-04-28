@@ -1,0 +1,65 @@
+<h2 class="page-title"><i class="fas fa-envelope mr-2"></i>Quản lý liên hệ</h2>
+
+<% if(typeof success !== 'undefined' && success) { %>
+    <% if(success === 'approve') { %><div class="alert alert-success admin-alert">Cập nhật trạng thái thành công!</div><% } %>
+    <% if(success === 'delete') { %><div class="alert alert-success admin-alert">Xóa liên hệ thành công!</div><% } %>
+<% } %>
+
+<!-- Hiển thị chi tiết liên hệ (nếu có) -->
+<% if(typeof viewContact !== 'undefined' && viewContact) { %>
+    <div class="admin-form mb-4">
+        <h5 class="font-weight-bold mb-3">Chi tiết liên hệ #<%= viewContact.id %></h5>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Họ tên:</strong> <%= viewContact.name %></p>
+                <p><strong>Email:</strong> <%= viewContact.email %></p>
+                <p><strong>SĐT:</strong> <%= viewContact.phone || 'Không có' %></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Tiêu đề:</strong> <%= viewContact.subject || 'Không có' %></p>
+                <p><strong>Ngày gửi:</strong> <%= new Date(viewContact.created_at).toLocaleDateString('vi-VN') %></p>
+                <p><strong>Trạng thái:</strong> <span class="<%= viewContact.status == 1 ? 'status-active' : 'status-inactive' %>"><%= viewContact.status == 1 ? 'Đã duyệt' : 'Chưa duyệt' %></span></p>
+            </div>
+        </div>
+        <div class="bg-light p-3 rounded mb-3">
+            <strong>Nội dung:</strong><br><%= viewContact.message %>
+        </div>
+        <form action="/admin/lien-he/duyet/<%= viewContact.id %>" method="POST" class="d-inline">
+            <input type="hidden" name="status" value="<%= viewContact.status == 1 ? 0 : 1 %>">
+            <button class="btn btn-sm btn-<%= viewContact.status == 1 ? 'warning' : 'success' %>">
+                <%= viewContact.status == 1 ? 'Bỏ duyệt' : 'Duyệt' %>
+            </button>
+        </form>
+        <a href="/admin/lien-he" class="btn btn-sm btn-secondary ml-2">Đóng</a>
+    </div>
+<% } %>
+
+<div class="admin-table">
+    <table class="table">
+        <thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Tiêu đề</th><th>Ngày gửi</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+        <tbody>
+            <% if(contacts && contacts.length > 0) { contacts.forEach(c => { %>
+                <tr>
+                    <td><%= c.id %></td>
+                    <td><strong><%= c.name %></strong></td>
+                    <td><%= c.email %></td>
+                    <td><%= c.subject || 'N/A' %></td>
+                    <td><small><%= new Date(c.created_at).toLocaleDateString('vi-VN') %></small></td>
+                    <td><span class="<%= c.status == 1 ? 'status-active' : 'status-inactive' %>"><%= c.status == 1 ? 'Đã duyệt' : 'Chưa duyệt' %></span></td>
+                    <td>
+                        <a href="/admin/lien-he/xem/<%= c.id %>" class="btn btn-sm btn-info" title="Xem"><i class="fas fa-eye"></i></a>
+                        <form action="/admin/lien-he/duyet/<%= c.id %>" method="POST" class="d-inline">
+                            <input type="hidden" name="status" value="<%= c.status == 1 ? 0 : 1 %>">
+                            <button class="btn btn-sm btn-<%= c.status == 1 ? 'warning' : 'success' %>" title="<%= c.status == 1 ? 'Bỏ duyệt' : 'Duyệt' %>">
+                                <i class="fas fa-<%= c.status == 1 ? 'times' : 'check' %>"></i>
+                            </button>
+                        </form>
+                        <a href="/admin/lien-he/xoa/<%= c.id %>" class="btn btn-sm btn-danger" title="Xóa" onclick="return confirm('Xóa liên hệ này?')"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            <% }) } else { %>
+                <tr><td colspan="7" class="text-center text-muted py-4">Chưa có liên hệ nào</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>

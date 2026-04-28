@@ -1,0 +1,66 @@
+<h2 class="page-title"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</h2>
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card" style="border-left-color: #007bff;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><div class="stat-number text-primary"><%= stats.totalNews %></div><div class="stat-label">Bài viết</div></div>
+                <div class="stat-icon text-primary"><i class="fas fa-newspaper"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card" style="border-left-color: #28a745;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><div class="stat-number text-success"><%= stats.totalCategories %></div><div class="stat-label">Chuyên mục</div></div>
+                <div class="stat-icon text-success"><i class="fas fa-folder"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card" style="border-left-color: #ffc107;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><div class="stat-number text-warning"><%= stats.totalContacts %></div><div class="stat-label">Liên hệ</div></div>
+                <div class="stat-icon text-warning"><i class="fas fa-envelope"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card" style="border-left-color: #dc3545;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><div class="stat-number text-danger"><%= stats.totalUsers %></div><div class="stat-label">Người dùng</div></div>
+                <div class="stat-icon text-danger"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="admin-table">
+            <div class="p-3 d-flex justify-content-between align-items-center" style="background: #1a1a2e; color: #fff; border-radius: 8px 8px 0 0;">
+                <h5 class="mb-0">Bài viết mới nhất</h5>
+                <a href="/admin/bai-viet" class="btn btn-sm btn-warning">Xem tất cả</a>
+            </div>
+            <table class="table">
+                <thead><tr><th>Tiêu đề</th><th>Ngày đăng</th><th>Trạng thái</th></tr></thead>
+                <tbody>
+                    <% if(latestNews && latestNews.length > 0) { latestNews.forEach(n => { %>
+                        <tr>
+                            <td><a href="/admin/bai-viet/sua/<%= n.id %>"><%= n.title.substring(0, 50) %>...</a></td>
+                            <td><%= new Date(n.created_at).toLocaleDateString('vi-VN') %></td>
+                            <td><span class="<%= n.status == 1 ? 'status-active' : 'status-inactive' %>"><%= n.status == 1 ? 'Hiển thị' : 'Ẩn' %></span></td>
+                        </tr>
+                    <% }) } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="admin-form">
+            <h5 class="font-weight-bold mb-3">Thao tác nhanh</h5>
+            <a href="/admin/bai-viet/them" class="btn btn-primary btn-block mb-2"><i class="fas fa-plus mr-1"></i>Thêm bài viết</a>
+            <a href="/admin/chuyen-muc" class="btn btn-success btn-block mb-2"><i class="fas fa-folder-plus mr-1"></i>Quản lý chuyên mục</a>
+            <a href="/admin/nguoi-dung" class="btn btn-info btn-block mb-2"><i class="fas fa-user-plus mr-1"></i>Quản lý người dùng</a>
+            <a href="/admin/lien-he" class="btn btn-warning btn-block mb-2"><i class="fas fa-envelope mr-1"></i>Xem liên hệ</a>
+        </div>
+    </div>
+</div>

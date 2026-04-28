@@ -1,0 +1,161 @@
+<!-- =============================================
+     TRANG DANH SÁCH TIN TỨC - Có tìm kiếm, phân trang
+     ============================================= -->
+
+<div class="container-fluid pt-5 mb-3">
+    <div class="container">
+        <div class="row">
+            <!-- NỘI DUNG CHÍNH (8 cột) -->
+            <div class="col-lg-8">
+                <div class="section-title">
+                    <h4 class="m-0 text-uppercase font-weight-bold">
+                        <i class="fas fa-newspaper text-primary mr-2"></i>Danh sách tin tức
+                    </h4>
+                </div>
+
+                <!-- Bộ lọc tìm kiếm -->
+                <div class="bg-white border p-3 mb-4">
+                    <form action="/tin-tuc" method="GET" class="form-inline">
+                        <div class="form-group mr-2 mb-2">
+                            <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm..." 
+                                   value="<%= typeof keyword !== 'undefined' ? keyword : '' %>">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">
+                            <i class="fa fa-search mr-1"></i>Tìm kiếm
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Hiển thị số lượng kết quả -->
+                <% if(typeof totalNews !== 'undefined') { %>
+                    <p class="text-muted mb-3">
+                        Tìm thấy <strong><%= totalNews %></strong> bài viết
+                        <% if(typeof keyword !== 'undefined' && keyword) { %>
+                            cho từ khóa "<strong><%= keyword %></strong>"
+                        <% } %>
+                    </p>
+                <% } %>
+
+                <!-- Danh sách bài viết -->
+                <% if(listNews && listNews.length > 0) { %>
+                    <div class="row">
+                        <% listNews.forEach(news => { %>
+                            <div class="col-md-6 mb-4">
+                                <div class="bg-white border h-100 shadow-sm">
+                                    <div style="height: 200px; overflow: hidden;">
+                                        <img src="/client/img/<%= news.image %>" alt="<%= news.title %>"
+                                             class="img-fluid w-100" style="height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div class="p-3">
+                                        <div class="mb-2">
+                                            <span class="badge badge-primary text-uppercase"><%= news.category_name %></span>
+                                            <small class="text-muted ml-2">
+                                                <i class="far fa-calendar-alt mr-1"></i><%= new Date(news.created_at).toLocaleDateString('vi-VN') %>
+                                            </small>
+                                        </div>
+                                        <a class="font-weight-bold d-block mb-2" href="/tin-tuc/<%= news.id %>"
+                                           style="font-size: 16px; height: 48px; overflow: hidden; color: #333; text-decoration: none;">
+                                            <%= news.title %>
+                                        </a>
+                                        <p class="text-muted mb-3" style="font-size: 14px; height: 42px; overflow: hidden;">
+                                            <%= news.summary %>
+                                        </p>
+                                        <a href="/tin-tuc/<%= news.id %>" class="btn btn-sm btn-primary">Đọc tiếp</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Phân trang -->
+                    <% if(typeof totalPages !== 'undefined' && totalPages > 1) { %>
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <% if(currentPage > 1) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/tin-tuc?page=<%= currentPage - 1 %>&keyword=<%= keyword || '' %>">
+                                            &laquo; Trước
+                                        </a>
+                                    </li>
+                                <% } %>
+                                <% for(let i = 1; i <= totalPages; i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link" href="/tin-tuc?page=<%= i %>&keyword=<%= keyword || '' %>">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                                <% if(currentPage < totalPages) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/tin-tuc?page=<%= currentPage + 1 %>&keyword=<%= keyword || '' %>">
+                                            Sau &raquo;
+                                        </a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </nav>
+                    <% } %>
+                <% } else { %>
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle mr-2"></i>Không tìm thấy bài viết nào.
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- SIDEBAR (4 cột) -->
+            <div class="col-lg-4">
+                <!-- Danh mục -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Chuyên mục</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-3">
+                        <% if(typeof categories !== 'undefined' && categories) { %>
+                            <% categories.forEach(cat => { %>
+                                <a href="/chuyen-muc/<%= cat.id %>" 
+                                   class="btn btn-sm btn-secondary m-1 <%= (typeof catId !== 'undefined' && catId == cat.id) ? 'btn-primary' : '' %>">
+                                    <%= cat.name %>
+                                </a>
+                            <% }) %>
+                            <a href="/tin-tuc" class="btn btn-sm btn-outline-primary m-1">Tất cả</a>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Đăng ký nhận tin</h4>
+                    </div>
+                    <div class="bg-white text-center border border-top-0 p-3">
+                        <p>Nhận thông báo bài viết mới nhất qua email</p>
+                        <div class="input-group mb-2">
+                            <input type="email" id="sidebar-subscribe-email" class="form-control" placeholder="Email của bạn">
+                            <div class="input-group-append">
+                                <button id="sidebar-subscribe-btn" class="btn btn-primary px-3">Đăng ký</button>
+                            </div>
+                        </div>
+                        <small id="sidebar-subscribe-msg" style="display:none;"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Subscribe sidebar
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('sidebar-subscribe-btn');
+    if (btn) {
+        btn.addEventListener('click', function() {
+            const email = document.getElementById('sidebar-subscribe-email').value;
+            const msgEl = document.getElementById('sidebar-subscribe-msg');
+            if (!email) { msgEl.textContent = 'Vui lòng nhập email!'; msgEl.className = 'text-danger'; msgEl.style.display = 'block'; return; }
+            fetch('/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+            .then(r => r.json()).then(data => { msgEl.textContent = data.message; msgEl.className = data.success ? 'text-success' : 'text-danger'; msgEl.style.display = 'block'; })
+            .catch(() => { msgEl.textContent = 'Có lỗi xảy ra!'; msgEl.className = 'text-danger'; msgEl.style.display = 'block'; });
+        });
+    }
+});
+</script>

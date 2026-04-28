@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizNews - Quản trị</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/admin/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <nav class="admin-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><span class="text-warning">Biz</span>News</h3>
+                <small class="text-muted">Quản trị hệ thống</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/bai-viet"><i class="fas fa-newspaper"></i> Bài viết</a></li>
+                <li><a href="/admin/chuyen-muc"><i class="fas fa-folder"></i> Chuyên mục</a></li>
+                <li><a href="/admin/nguoi-dung"><i class="fas fa-users"></i> Người dùng</a></li>
+                <li><a href="/admin/lien-he"><i class="fas fa-envelope"></i> Liên hệ</a></li>
+                <li><a href="/admin/subscribers"><i class="fas fa-bell"></i> Newsletter</a></li>
+                <li class="mt-4"><a href="/" target="_blank"><i class="fas fa-globe"></i> Xem trang chủ</a></li>
+                <li><a href="/admin/dang-xuat" class="text-danger"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+            </ul>
+        </nav>
+        <!-- MAIN CONTENT -->
+        <div class="admin-main">
+            <header class="admin-header">
+                <button class="btn btn-dark d-md-none" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                <div class="ml-auto d-flex align-items-center">
+                    <span class="mr-3"><i class="far fa-user mr-1"></i><%= typeof user !== 'undefined' ? user.fullname : 'Admin' %></span>
+                    <a href="/admin/dang-xuat" class="btn btn-sm btn-outline-danger">Đăng xuất</a>
+                </div>
+            </header>
+            <main class="admin-content">
+                <%- include(content) %>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function(){
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
